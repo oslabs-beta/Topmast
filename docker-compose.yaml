@@ -1,0 +1,3 @@
+services:
+  moby-metrics:
+    image: ${DESKTOP_PLUGIN_IMAGE}
