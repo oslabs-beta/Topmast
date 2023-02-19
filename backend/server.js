@@ -6,7 +6,7 @@ const express = require('express');
 const app = express();
 
 app.get('/hello', (_req, res) => {
-  res.send({ message: 'Hello' });
+  res.send({ message: 'Hello World' });
 });
 
 const sock = process.argv[2];

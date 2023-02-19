@@ -12,12 +12,16 @@ function useDockerDesktopClient() {
 }
 
 export function App() {
-  const [response, setResponse] = React.useState<string>('test');
+  const [response, setResponse] = React.useState<string>();
   const ddClient = useDockerDesktopClient();
 
   const fetchAndDisplayResponse = async () => {
-    const result = await ddClient.extension.vm?.service?.get('/hello');
-    setResponse('hello');
+    try {
+      const result = await ddClient.extension.vm?.service?.get('/hello');
+      setResponse(JSON.stringify(result));
+    } catch (e: any) {
+      setResponse(e.message);
+    }
   };
 
   return (
