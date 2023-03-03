@@ -20,7 +20,10 @@ import {
   useTheme,
 } from '@mui/material';
 
-type Props = {};
+type Props = {
+  isSidebarOpen: boolean;
+  setIsSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
+};
 
 const Navbar = (props: Props) => {
   const dispatch = useDispatch();
@@ -31,15 +34,21 @@ const Navbar = (props: Props) => {
       sx={{
         position: 'static',
         background: 'none',
-        boxShadow: 'none',
+        // boxShadow: 'none',
       }}>
       <Toolbar sx={{ justifyContent: 'space-between' }}>
         {/* LEFT SIDE */}
         <FlexBetween>
-          <IconButton onClick={() => console.log('open/close sidebar')}>
+          <IconButton
+            onClick={() => props.setIsSidebarOpen(!props.isSidebarOpen)}
+            sx={{
+              mr: 2,
+              ...(props.isSidebarOpen === true && { display: 'none' }),
+            }}>
             <MenuIcon />
           </IconButton>
-          <FlexBetween
+          {/* Below code is for a search component */}
+          {/* <FlexBetween
             // backgroundColor={theme.palette.background.alt}
             borderRadius='9px'
             gap='3rem'
@@ -48,7 +57,7 @@ const Navbar = (props: Props) => {
             <IconButton>
               <Search />
             </IconButton>
-          </FlexBetween>
+          </FlexBetween> */}
         </FlexBetween>
 
         {/* RIGHT SIDE */}
@@ -63,9 +72,10 @@ const Navbar = (props: Props) => {
               <LightModeOutlined sx={{ fontSize: '25px' }} />
             )}
           </IconButton>
-          <IconButton>
+          {/* Navbar settings icon */}
+          {/* <IconButton>
             <SettingsOutlined sx={{ fontSize: '25px' }} />
-          </IconButton>
+          </IconButton> */}
         </FlexBetween>
       </Toolbar>
     </AppBar>

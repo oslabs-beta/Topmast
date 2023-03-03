@@ -14,12 +14,15 @@ const Layout = (props: Props) => {
       height='100%'
       display='flex'>
       <Sidebar
-        drawerWidth='100px'
+        drawerWidth='200px'
         isSidebarOpen={isSidebarOpen}
         setIsSidebarOpen={setIsSidebarOpen}
       />
       <Box sx={{ flexGrow: 1 }}>
-        <Navbar />
+        <Navbar
+          isSidebarOpen={isSidebarOpen}
+          setIsSidebarOpen={setIsSidebarOpen}
+        />
         <Outlet />
       </Box>
     </Box>

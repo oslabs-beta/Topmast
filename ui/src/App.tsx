@@ -41,7 +41,6 @@ export function App() {
       <BrowserRouter>
         <DockerMuiThemeProvider>
           <CssBaseline />
-          <h2>Top Metrics: Codename Moby Mast</h2>
           <Routes>
             <Route element={<Layout />}>
               <Route
