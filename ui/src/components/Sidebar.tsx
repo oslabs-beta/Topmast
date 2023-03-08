@@ -26,7 +26,7 @@ import {
   PieChartOutlined,
 } from '@mui/icons-material';
 import StorageIcon from '@mui/icons-material/Storage';
-import pandawhale from '../assets/pandawhale.png';
+import pandaWhale from '../assets/pandaWhale.png';
 
 const navItems = [
   { text: 'Dashboard', icon: <HomeOutlined /> },
@@ -101,7 +101,7 @@ const Sidebar = (props: Props) => {
                   <Box
                     component='img'
                     alt='panda whale'
-                    src={pandawhale}
+                    src={pandaWhale}
                     height='100%'
                     width='100%'
                     borderRadius='50%'
@@ -134,20 +134,20 @@ const Sidebar = (props: Props) => {
                       sx={{
                         backgroundColor:
                           active === lcText
-                            ? theme.palette.secondary[300]
+                            ? theme.palette.secondary.dark
                             : 'transparent',
                         color:
                           active === lcText
-                            ? theme.palette.primary[600]
-                            : theme.palette.text.secondary[100],
+                            ? theme.palette.info.dark
+                            : theme.palette.text.secondary,
                       }}>
                       <ListItemIcon
                         sx={{
                           ml: '2rem',
                           color:
                             active === lcText
-                              ? theme.palette.primary[600]
-                              : theme.palette.secondary[200],
+                              ? theme.palette.info.dark
+                              : theme.palette.secondary.main,
                         }}>
                         {icon}
                       </ListItemIcon>
