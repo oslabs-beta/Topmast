@@ -17,7 +17,7 @@ export function App() {
 
   const fetchAndDisplayResponse = async () => {
     try {
-      const result = await ddClient.extension.vm?.service?.get('/hello');
+      const result = await ddClient.extension.vm?.service?.get('/logs');
       setResponse(JSON.stringify(result));
     } catch (e: any) {
       setResponse(e.message);
@@ -26,7 +26,7 @@ export function App() {
 
   return (
     <>
-      <Typography variant='h3'>Docker extension demo</Typography>
+      <Typography variant='h3'>Not Docker extension demo</Typography>
       <Typography variant='body1' color='text.secondary' sx={{ mt: 2 }}>
         This is a basic page rendered with MUI, using Docker's theme. Read the
         MUI documentation to learn more. Using MUI in a conventional way and
