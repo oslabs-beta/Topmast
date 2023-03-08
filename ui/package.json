@@ -22,7 +22,7 @@
     "test": "jest src"
   },
   "devDependencies": {
-    "@docker/extension-api-client-types": "0.3.3",
+    "@docker/extension-api-client-types": "^0.3.3",
     "@types/jest": "^29.1.2",
     "@types/node": "^18.7.18",
     "@types/react": "^18.0.17",
