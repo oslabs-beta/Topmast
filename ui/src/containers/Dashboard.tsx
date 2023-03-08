@@ -11,7 +11,17 @@ function useDockerDesktopClient() {
 
 const Dashboard = (props: Props) => {
   const [response, setResponse] = React.useState<string>();
+  const [containers, setContainers] = React.useState<any[]>([]);
   const ddClient = useDockerDesktopClient();
+
+
+  // React.useEffect(() => {
+  //   // List all containers
+  //   ddClient.docker.cli.exec('ps', ['--all', '--format', '"{{json .}}"']).then((result) => {
+  //     // result.parseJsonLines() parses the output of the command into an array of objects
+  //     setContainers(result.parseJsonLines());
+  //   });
+  // }, []);
 
   const fetchAndDisplayResponse = async () => {
     try {
@@ -21,6 +31,15 @@ const Dashboard = (props: Props) => {
       setResponse(e.message);
     }
   };
+
+  const fetchContainers = () => {
+    ddClient.docker.cli.exec('ps', ['--all', '--format', '"{{json .}}"']).then((result) => {
+      setContainers(result.parseJsonLines());
+    });
+  }
+    
+  
+
   return (
     <Box>
       {/* // <Typography variant='h3'>Docker extension demo</Typography>
@@ -48,7 +67,7 @@ const Dashboard = (props: Props) => {
         sx={{ mt: 4 }}>
         <Button
           variant='contained'
-          onClick={fetchAndDisplayResponse}>
+          onClick={() => fetchContainers()}>
           Call backend
         </Button>
 
@@ -59,8 +78,7 @@ const Dashboard = (props: Props) => {
           multiline
           variant='outlined'
           minRows={5}
-          value={response ?? ''}
-        />
+          value={JSON.stringify(containers, undefined, 2) ?? ''}/>
       </Stack>
     </Box>
   );
