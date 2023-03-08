@@ -1,20 +1,20 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import CssBaseline from "@mui/material/CssBaseline";
-import { DockerMuiThemeProvider } from "@docker/docker-mui-theme";
-
+import React from 'react';
+import ReactDOM from 'react-dom/client';
 import { App } from './App';
+import { configureStore } from '@reduxjs/toolkit';
+import globalReducer from './state/index';
+import { Provider } from 'react-redux';
 
-ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
+const store = configureStore({
+  reducer: {
+    global: globalReducer,
+  },
+});
+
+ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
-    {/*
-      If you eject from MUI (which we don't recommend!), you should add
-      the `dockerDesktopTheme` class to your root <html> element to get
-      some minimal Docker theming.
-    */}
-    <DockerMuiThemeProvider>
-      <CssBaseline />
+    <Provider store={store}>
       <App />
-    </DockerMuiThemeProvider>
+    </Provider>
   </React.StrictMode>
 );
