@@ -56,6 +56,10 @@ Use the `docker extension update` command to remove and re-install the extension
 docker extension update moby-metrics/dashboard:latest
 ```
 
+make build-extension
+THEN
+make update-extension
+
 > If you want to automate this command, use the `-f` or `--force` flag to accept the warning message.
 
 > Extension containers are hidden from the Docker Dashboard by default. You can change this in Settings > Extensions > Show Docker Extensions system containers.
@@ -74,3 +78,27 @@ docker extension rm moby-metrics/dashboard:latest
 - To publish your extension in the Marketplace visit https://www.docker.com/products/extensions/submissions/.
 - To report issues and feedback visit https://github.com/docker/extensions-sdk/issues.
 - To look for other ideas of new extensions, or propose new ideas of extensions you would like to see, visit https://github.com/docker/extension-ideas/discussions.
+
+## Bjorn TLDR
+
+Docker Desktop will keep running when changes are made to the extension files.
+No need to restart it.
+
+Here are the key dev commands
+
+## Loading New Build
+
+"make build-extension" will create the new build FRONT OR BACK
+"make update-extension" will load the new build to Docker Desktop FRONT OR BACK
+
+## Configuring Hot Reloading
+
+start dev server:
+cd ui
+npm install (on first run)
+npm run dev
+
+Point DD to the dev server:
+"make hotreload-extension"
+
+
