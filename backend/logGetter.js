@@ -14,7 +14,7 @@ logGetter = {};
 containers = {};
 stats = {};
 
-//write this so that only new containers are added
+// this function will return a promise with all containers on resolution
 logGetter.updateContainers = async (containers) => {
   // run a get request on the docker engine daemon
   // that returns all containers
@@ -32,15 +32,16 @@ logGetter.updateContainers = async (containers) => {
       if (containers[container.Id] === undefined){
         containers[container.Id] = container;
       }
-      console.log(container.Id);
+      // console.log(container.Id);
       // logs[container.Id] = await logGetter.getLog(container.Id);
       // console.log(logs, null, 2);
+        return containers;
     });
   } catch (error) {
     console.log('error in fetching container ids');
     console.log(error);
   }
-  return containers;
+
 }
 
 // logGetter.getLog = async (id) => {
@@ -139,7 +140,10 @@ logGetter.getStats = (id) => {
 // }
 
 // just a test function
+// conta
 containers = logGetter.updateContainers(containers);
+// console.log(containers);
+
 logGetter.getStats('f6d0631bb99c07be290e1e25568a5ccec4b6e0d26c0e99929173526d6880b728');
 // logGetter.getLogs(containers);
 // logGetter.getStats(containers);
