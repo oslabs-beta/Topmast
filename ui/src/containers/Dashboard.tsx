@@ -23,15 +23,14 @@ const Dashboard = (props: Props) => {
       // result.parseJsonLines() parses the output of the command into an array of objects
       setContainers(result.parseJsonLines());
     }).then((result)=>{
+      //this command will fetch the last 5 lines of each log from the list of containers. 5
+      //is arbitrary, just used to confirm each log is different
     containers.forEach((container) => {
-      ddClient.docker.cli.exec(`container logs 13e999354149`, []).then((result) => {
+      console.log(container.ID);
+      ddClient.docker.cli.exec(`container logs -n 5 ${container.ID}`, []).then((result) => {
         setLogs(logs.concat(result.stderr));
       });
     })});
-    // ddClient.docker.cli.exec(`container logs 13e999354149`, []).then((result) => {
-    //   console.log(result.stderr);
-    //   setLogs(logs.concat(result.stderr));
-    // })
   }, []);
 
   const fetchAndDisplayResponse = async () => {
