@@ -12,16 +12,27 @@ function useDockerDesktopClient() {
 const Dashboard = (props: Props) => {
   const [response, setResponse] = React.useState<string>();
   const [containers, setContainers] = React.useState<any[]>([]);
+  const [logs, setLogs] = React.useState<any[]>([]);
+  const [metrics, setMetrics] = React.useState<any[]>([]);
   const ddClient = useDockerDesktopClient();
 
-
-  // React.useEffect(() => {
-  //   // List all containers
-  //   ddClient.docker.cli.exec('ps', ['--all', '--format', '"{{json .}}"']).then((result) => {
-  //     // result.parseJsonLines() parses the output of the command into an array of objects
-  //     setContainers(result.parseJsonLines());
-  //   });
-  // }, []);
+  
+  React.useEffect(() => {
+    // List all containers
+    ddClient.docker.cli.exec('ps', ['--all', '--format', '"{{json .}}"']).then((result) => {
+      // result.parseJsonLines() parses the output of the command into an array of objects
+      setContainers(result.parseJsonLines());
+    }).then((result)=>{
+    containers.forEach((container) => {
+      ddClient.docker.cli.exec(`container logs 13e999354149`, []).then((result) => {
+        setLogs(logs.concat(result.stderr));
+      });
+    })});
+    // ddClient.docker.cli.exec(`container logs 13e999354149`, []).then((result) => {
+    //   console.log(result.stderr);
+    //   setLogs(logs.concat(result.stderr));
+    // })
+  }, []);
 
   const fetchAndDisplayResponse = async () => {
     try {
@@ -78,10 +89,11 @@ const Dashboard = (props: Props) => {
           multiline
           variant='outlined'
           minRows={5}
-          value={JSON.stringify(containers, undefined, 2) ?? ''}/>
+          value={logs ?? ''}/>
       </Stack>
     </Box>
-  );
+  ); 
 };
 
 export default Dashboard;
+  
