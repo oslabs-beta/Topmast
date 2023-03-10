@@ -35,15 +35,6 @@ const Dashboard = (props: Props) => {
       // console.log(result);
       setStats(result.stdout)})
   }, []);
-
-  const fetchAndDisplayResponse = async () => {
-    try {
-      const result = await ddClient.extension.vm?.service?.get('/hello');
-      setResponse(JSON.stringify(result));
-    } catch (e: any) {
-      setResponse(e.message);
-    }
-  };
     
   return (
     <Box>
@@ -72,6 +63,8 @@ const Dashboard = (props: Props) => {
         sx={{ mt: 4 }}>
         <Button
           variant='contained'
+          //this button used to fetch the data
+          //it now has a placeholder in case we want it to do something.
           onClick={() => console.log('clicked')}>
           Call backend
         </Button>
