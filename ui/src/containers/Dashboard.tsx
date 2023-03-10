@@ -13,7 +13,7 @@ const Dashboard = (props: Props) => {
   const [response, setResponse] = React.useState<string>();
   const [containers, setContainers] = React.useState<any[]>([]);
   const [logs, setLogs] = React.useState<any[]>([]);
-  const [metrics, setMetrics] = React.useState<any[]>([]);
+  const [stats, setStats] = React.useState<any[]>([]);
   const ddClient = useDockerDesktopClient();
 
   
@@ -23,14 +23,17 @@ const Dashboard = (props: Props) => {
       // result.parseJsonLines() parses the output of the command into an array of objects
       setContainers(result.parseJsonLines());
     }).then((result)=>{
-      //this command will fetch the last 5 lines of each log from the list of containers. 5
-      //is arbitrary, just used to confirm each log is different
+      //this command will fetch the last 5 lines of each log from the list of containers. 
     containers.forEach((container) => {
-      console.log(container.ID);
+      // console.log(container.ID);
       ddClient.docker.cli.exec(`container logs -n 5 ${container.ID}`, []).then((result) => {
         setLogs(logs.concat(result.stderr));
       });
-    })});
+    })})
+    // this grabs a snapshot of the metrics of ALL containers
+    ddClient.docker.cli.exec('stats', ['--no-stream', '-a']).then((result) => {
+      // console.log(result);
+      setStats(result.stdout)})
   }, []);
 
   const fetchAndDisplayResponse = async () => {
@@ -41,15 +44,7 @@ const Dashboard = (props: Props) => {
       setResponse(e.message);
     }
   };
-
-  const fetchContainers = () => {
-    ddClient.docker.cli.exec('ps', ['--all', '--format', '"{{json .}}"']).then((result) => {
-      setContainers(result.parseJsonLines());
-    });
-  }
     
-  
-
   return (
     <Box>
       {/* // <Typography variant='h3'>Docker extension demo</Typography>
@@ -77,7 +72,7 @@ const Dashboard = (props: Props) => {
         sx={{ mt: 4 }}>
         <Button
           variant='contained'
-          onClick={() => fetchContainers()}>
+          onClick={() => console.log('clicked')}>
           Call backend
         </Button>
 
@@ -88,7 +83,8 @@ const Dashboard = (props: Props) => {
           multiline
           variant='outlined'
           minRows={5}
-          value={logs ?? ''}/>
+          // we can assign this value to stats, logs, and container list
+          value={stats ?? ''}/>
       </Stack>
     </Box>
   ); 
