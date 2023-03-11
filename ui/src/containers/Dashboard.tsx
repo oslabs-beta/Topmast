@@ -103,10 +103,9 @@ function useDockerDesktopClient() {
 }
 
 const Dashboard = (props: Props) => {
-  const [response, setResponse] = React.useState<string>();
   const [containers, setContainers] = React.useState<any[]>([]);
   const [logs, setLogs] = React.useState<any[]>([]);
-  const [stats, setStats] = React.useState<any[]>([]);
+  const [stats, setStats] = React.useState('');
   const ddClient = useDockerDesktopClient();
 
   React.useEffect(() => {
@@ -124,6 +123,7 @@ const Dashboard = (props: Props) => {
           ddClient.docker.cli
             .exec(`container logs -n 5 ${container.ID}`, [])
             .then((result) => {
+              console.log(result.stderr);
               setLogs(logs.concat(result.stderr));
             });
         });
@@ -133,7 +133,7 @@ const Dashboard = (props: Props) => {
       // console.log(result);
       setStats(result.stdout);
     });
-  }, []);
+  }, [containers, logs, stats]);
 
   return (
     <Box>
@@ -170,9 +170,28 @@ const Dashboard = (props: Props) => {
         >
           Call backend
         </Button>
-
         <TextField
-          label="Backend response"
+          label="Containers go here"
+          sx={{ width: 480 }}
+          disabled
+          multiline
+          variant="outlined"
+          minRows={5}
+          // we can assign this value to stats, logs, and container list
+          value={JSON.stringify(containers, undefined, 2) ?? ""}
+        />
+        <TextField
+          label="Logs go here"
+          sx={{ width: 480 }}
+          disabled
+          multiline
+          variant="outlined"
+          minRows={5}
+          // we can assign this value to stats, logs, and container list
+          value={JSON.stringify(logs, undefined, 2) ?? ""}
+        />
+        <TextField
+          label="Stats go here"
           sx={{ width: 480 }}
           disabled
           multiline
