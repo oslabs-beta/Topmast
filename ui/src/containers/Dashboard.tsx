@@ -12,34 +12,30 @@ function useDockerDesktopClient() {
 const Dashboard = (props: Props) => {
   const [response, setResponse] = React.useState<string>();
   const [containers, setContainers] = React.useState<any[]>([]);
+  const [logs, setLogs] = React.useState<any[]>([]);
+  const [stats, setStats] = React.useState<any[]>([]);
   const ddClient = useDockerDesktopClient();
 
-
-  // React.useEffect(() => {
-  //   // List all containers
-  //   ddClient.docker.cli.exec('ps', ['--all', '--format', '"{{json .}}"']).then((result) => {
-  //     // result.parseJsonLines() parses the output of the command into an array of objects
-  //     setContainers(result.parseJsonLines());
-  //   });
-  // }, []);
-
-  const fetchAndDisplayResponse = async () => {
-    try {
-      const result = await ddClient.extension.vm?.service?.get('/hello');
-      setResponse(JSON.stringify(result));
-    } catch (e: any) {
-      setResponse(e.message);
-    }
-  };
-
-  const fetchContainers = () => {
-    ddClient.docker.cli.exec('ps', ['--all', '--format', '"{{json .}}"']).then((result) => {
-      setContainers(result.parseJsonLines());
-    });
-  }
-    
   
-
+  React.useEffect(() => {
+    // List all containers
+    ddClient.docker.cli.exec('ps', ['--all', '--format', '"{{json .}}"']).then((result) => {
+      // result.parseJsonLines() parses the output of the command into an array of objects
+      setContainers(result.parseJsonLines());
+    }).then((result)=>{
+      //this command will fetch the last 5 lines of each log from the list of containers. 
+    containers.forEach((container) => {
+      // console.log(container.ID);
+      ddClient.docker.cli.exec(`container logs -n 5 ${container.ID}`, []).then((result) => {
+        setLogs(logs.concat(result.stderr));
+      });
+    })})
+    // this grabs a snapshot of the metrics of ALL containers
+    ddClient.docker.cli.exec('stats', ['--no-stream', '-a']).then((result) => {
+      // console.log(result);
+      setStats(result.stdout)})
+  }, []);
+    
   return (
     <Box>
       {/* // <Typography variant='h3'>Docker extension demo</Typography>
@@ -67,7 +63,9 @@ const Dashboard = (props: Props) => {
         sx={{ mt: 4 }}>
         <Button
           variant='contained'
-          onClick={() => fetchContainers()}>
+          //this button used to fetch the data
+          //it now has a placeholder in case we want it to do something.
+          onClick={() => console.log('clicked')}>
           Call backend
         </Button>
 
@@ -78,10 +76,12 @@ const Dashboard = (props: Props) => {
           multiline
           variant='outlined'
           minRows={5}
-          value={JSON.stringify(containers, undefined, 2) ?? ''}/>
+          // we can assign this value to stats, logs, and container list
+          value={stats ?? ''}/>
       </Stack>
     </Box>
-  );
+  ); 
 };
 
 export default Dashboard;
+  
