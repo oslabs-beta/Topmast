@@ -1,14 +1,24 @@
 import { CHANGE_STATS } from "./actions";
 
-import { initialState} from "./appContext";
+import { initialState, saveState} from "./appContext";
+
+// we will use this reducer to make changes to our global state
 
 const reducer = (state, action) => {
-  if (action.type === CHANGE_STATS) {
-    return {
-      ...state,
-      stats: action.payload
+  switch(action.type){
+    case (action.type === CHANGE_STATS): {
+      const newState = {  ...state,
+        stats: action.payload
+      };
+      saveState(newState);
+      return newState;
     }
-  }
+    case (action.type === CHANGE_LOGS): {
+      const newState = { ...state,
+        logs: action.payload
+      };
+    }
+
 }
 
 export default reducer;

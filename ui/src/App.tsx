@@ -1,8 +1,8 @@
-import React from 'react';
-import Button from '@mui/material/Button';
-import { createDockerDesktopClient } from '@docker/extension-api-client';
-import { Stack, TextField, Typography } from '@mui/material';
-import { useAppContext} from "./context/AppContext";
+import React from "react";
+import Button from "@mui/material/Button";
+import { createDockerDesktopClient } from "@docker/extension-api-client";
+import { Stack, TextField, Typography } from "@mui/material";
+import { useAppContext } from "./context/AppContext";
 
 // Note: This line relies on Docker Desktop's presence as a host application.
 // If you're running this React app in a browser, it won't work properly.
@@ -12,15 +12,18 @@ function useDockerDesktopClient() {
   return client;
 }
 
+// all queries to the docker desktop client will be made in the App context
+// and will user the reducer to change the global state
+
 export function App() {
   const [response, setResponse] = React.useState<string>();
-  const {containers, logs, stats, changeState} = useAppContext()
+  const { containers, logs, stats, changeState } = useAppContext();
   const ddClient = useDockerDesktopClient();
 
   const fetchAndDisplayResponse = async () => {
-    const result = await ddClient.extension.vm?.service?.get('/hello');
+    const result = await ddClient.extension.vm?.service?.get("/hello");
     setResponse(JSON.stringify(result));
-    changeState(result)
+    changeState(result);
   };
 
   return (
@@ -48,7 +51,7 @@ export function App() {
           multiline
           variant="outlined"
           minRows={5}
-          value={response ?? ''}
+          value={response ?? ""}
         />
       </Stack>
     </>

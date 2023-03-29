@@ -1,9 +1,8 @@
-import {useContext, useReducer, createContext, useEffect } from 'react'
-import { CHANGE_STATS } from './actions';
+import { useContext, useReducer, createContext, useEffect } from "react";
+import { CHANGE_STATS } from "./actions";
 
 // This file creates our App Context Provider which allows for global
 // state management in our app
-
 
 // const [containers, setContainers] = React.useState<any[]>([]);
 // const [logs, setLogs] = React.useState<any[]>([]);
@@ -11,13 +10,15 @@ import { CHANGE_STATS } from './actions';
 
 // Create an initial state for the app
 
-const s
+const savedState = localStorage.getItem("state");
 
 const initialState = {
   containers: [],
   logs: [],
-  stats: ''
-}
+  stats: "",
+};
+
+const currentState = savedState ? JSON.parse(savedState) : initialState;
 
 // define our appcontext for later export
 const AppContext = createContext();
@@ -27,21 +28,41 @@ const AppContext = createContext();
 // have access to our global state and our reducer
 
 const AppContextProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(reducer, initialState); // we intialize our state with the initial state
-  
+  const [state, dispatch] = useReducer(reducer, currentState); // we in); // we intialize our state with the initial state
+
   // this is a sample function that a component can invoke to dispatch an action to
   // the reducer. this is basically the same flow as Redux
-  const changeStats = result => {
+  const changeStats = (result) => {
     dispatch({
       type: CHANGE_STATS,
-      payload: result
-    })
-  }
-  
+      payload: result,
+    });
+  };
+
+  const changeLogs = (result) => {
+    dispatch({
+      type: CHANGE_LOGS,
+      payload: result,
+    });
+  };
+
+  const changeContainers = (result) => {
+    dispatch({
+      type: CHANGE_CONTAINERS,
+      payload: result,
+    });
+  };
+
+  const saveState = (state) => {
+    localStorage.setItem("state", JSON.stringify(state));
+  };
+
   // here we return our react component passing in the current state and all functions
   // that we want to make available
   return (
-    <AppContext.Provider value={{...state, changeStats}}>
+    <AppContext.Provider
+      value={{ ...state, changeStats, changeLogs, changeContainers, saveState }}
+    >
       {children}
     </AppContext.Provider>
   );
@@ -53,4 +74,4 @@ const AppContextProvider = ({ children }) => {
 
 const useAppContext = () => useContext(AppContext);
 
-export { AppContextProvider, useAppContext, initialState }
+export { AppContextProvider, useAppContext, initialState };
