@@ -1,6 +1,5 @@
-import { CHANGE_STATS } from "./actions";
-
-import { initialState, saveState } from "./appContext";
+import { initialState, saveState } from "./AppContext";
+import { CHANGE_LOGS, CHANGE_STATS, CHANGE_CONTAINERS } from "./actions";
 
 // we will use this reducer to make changes to our global state
 
