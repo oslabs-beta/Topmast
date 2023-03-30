@@ -1,5 +1,5 @@
 import { useContext, useReducer, createContext, useEffect } from "react";
-import { CHANGE_STATS } from "./actions";
+import { CHANGE_STATS, CHANGE_LOGS, CHANGE_CONTAINERS } from "./actions";
 
 // This file creates our App Context Provider which allows for global
 // state management in our app
@@ -10,6 +10,8 @@ import { CHANGE_STATS } from "./actions";
 
 // Create an initial state for the app
 
+// this pulls the saved state from local storage. getItem returns
+// a JSON
 const savedState = localStorage.getItem("state");
 
 const initialState = {
@@ -18,17 +20,21 @@ const initialState = {
   stats: "",
 };
 
+// check to see if the saved state string has a value. if it does
+// parse it into an object. if it does not, then we populate the
+// current state with our initial state object
 const currentState = savedState ? JSON.parse(savedState) : initialState;
 
 // define our appcontext for later export
-const AppContext = createContext();
+const AppContext = createContext(null);
 
 // create our app context provider. it will be invoked at the main.tsx level with the argument of
 // children = App. this means that ALL components in the hierachy below and including App.tsx will
 // have access to our global state and our reducer
 
 const AppContextProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(reducer, currentState); // we in); // we intialize our state with the initial state
+  // we intialize our state with the initial state
+  const [state, dispatch] = useReducer(reducer, currentState);
 
   // this is a sample function that a component can invoke to dispatch an action to
   // the reducer. this is basically the same flow as Redux
