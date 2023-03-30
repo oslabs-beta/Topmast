@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import CssBaseline from "@mui/material/CssBaseline";
 import { DockerMuiThemeProvider } from "@docker/docker-mui-theme";
+import { AppContextProvider} from "./context/AppContext";
 
 import { App } from './App';
 
@@ -14,7 +15,10 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     */}
     <DockerMuiThemeProvider>
       <CssBaseline />
-      <App />
+      <AppContextProvider>
+        <App />
+      </AppContextProvider>
+      
     </DockerMuiThemeProvider>
   </React.StrictMode>
 );
