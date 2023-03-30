@@ -27,9 +27,11 @@ export function App() {
   };
   // this will run once and fetch logs and the container lists
   React.useEffect(() => {
-    console.log(containers, logs, stats);
+    console.log({ containers }, { logs }, { stats });
     getContainers();
-    console.log({ containers });
+    getLogs(containers);
+    getStats();
+    console.log(stats);
   }, []);
 
   return (

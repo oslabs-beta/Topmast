@@ -70,6 +70,7 @@ const AppContextProvider = ({ children }) => {
   };
 
   const getContainers = () => {
+    console.log("i am getting containers");
     ddClient.docker.cli
       .exec("ps", ["--all", "--format", '"{{json .}}"'])
       .then((result) => {
@@ -93,7 +94,7 @@ const AppContextProvider = ({ children }) => {
 
   // this grabs a snapshot of the metrics of ALL containers
   // fetch stats on a timer of 5 seconds
-  const getMetrics = () => {
+  const getStats = () => {
     ddClient.docker.cli.exec("stats", ["--no-stream", "-a"]).then((result) => {
       // console.log(result);
       changeStats(result.stdout);
@@ -112,7 +113,7 @@ const AppContextProvider = ({ children }) => {
         changeContainers,
         getContainers,
         getLogs,
-        getMetrics,
+        getStats,
         saveState,
       }}
     >

@@ -5,18 +5,19 @@ import { CHANGE_LOGS, CHANGE_STATS, CHANGE_CONTAINERS } from "./actions";
 
 const reducer = (state, action) => {
   switch (action.type) {
-    case action.type === CHANGE_STATS: {
+    case CHANGE_STATS: {
       const newState = { ...state, stats: action.payload };
       saveState(newState);
       return newState;
     }
-    case action.type === CHANGE_LOGS: {
+    case CHANGE_LOGS: {
       const newState = { ...state, logs: action.payload };
       saveState(newState);
       return newState;
     }
-    case action.type === CHANGE_CONTAINERS: {
+    case CHANGE_CONTAINERS: {
       const newState = { ...state, containers: action.payload };
+      // console.log("payload" + JSON.stringify(action.payload));
       saveState(newState);
       return newState;
     }
