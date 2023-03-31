@@ -3,6 +3,8 @@ import Button from "@mui/material/Button";
 import { Stack, TextField, Typography } from "@mui/material";
 import { useAppContext } from "./context/AppContext";
 
+import DashboardView from "./views/DashboardView";
+
 // Note: This line relies on Docker Desktop's presence as a host application.
 // If you're running this React app in a browser, it won't work properly.
 
@@ -43,6 +45,9 @@ export function App() {
         avoiding custom styling will help make sure your extension continues to
         look great as Docker's theme evolves.
       </Typography>
+
+    <DashboardView></DashboardView>
+
       <Typography variant="body1" color="text.secondary" sx={{ mt: 2 }}>
         Pressing the below button will trigger a request to the backend. Its
         response will appear in the textarea.
