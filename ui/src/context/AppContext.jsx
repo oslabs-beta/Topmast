@@ -80,13 +80,15 @@ const AppContextProvider = ({ children }) => {
       });
   };
 
+  // this grabs a snapshot of the logs of ALL containers
+  // ... is this useful?
   const getLogs = (containers) => {
     containers.forEach((container) => {
       // console.log(container.ID);
       ddClient.docker.cli
         .exec(`container logs --details ${container.ID}`, [])
         .then((result) => {
-          // console.log(result.stderr);
+          console.log("result!", result);
           changeLogs(result.stderr);
         });
     });
