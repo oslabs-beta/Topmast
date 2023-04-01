@@ -213,3 +213,12 @@ stats
     }
   }
 }
+
+logs
+ time="2023-03-30T01:26:13Z" level=info msg="Starting listening on /run/guest-services/ext.sock\n"
+ time="2023-03-30T01:26:13Z" level=info msg="Bugsnag configuration added successfully."
+ time="2023-03-30T01:26:13Z" level=info msg="Successfully pulled all the images"
+ time="2023-03-30T01:26:13Z" level=info msg="Bugsnag handler configured successfully."
+ ⇨ http server started on /run/guest-services/ext.sock
+ {"time":"2023-03-31T01:48:27.061873544Z","id":"","host":"localhost","method":"GET","uri":"/progress","user_agent":"Docker-Desktop/4.16.2 (Mac; arm64)","status":200,"error":"","latency":4015375,"latency_human":"4.015375ms","bytes_in":0,"bytes_out":3}
+ {"time":"2023-03-31T01:48:27.085588044Z","id":"","host":"localhost","method":"GET","uri":"/volumes","user_agent":"Docker-Desktop/4.16.2 (Mac; arm64)","status":200,"error":"","latency":28868000,"latency_human":"28.868ms","bytes_in":0,"bytes_out":1282}

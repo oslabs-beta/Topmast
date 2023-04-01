@@ -75,7 +75,7 @@ const AppContextProvider = ({ children }) => {
       .exec("ps", ["--all", "--format", '"{{json .}}"'])
       .then((result) => {
         // result.parseJsonLines() parses the output of the command into an array of objects
-        console.log(result);
+        // console.log(result);
         changeContainers(result.parseJsonLines());
       });
   };
@@ -87,6 +87,7 @@ const AppContextProvider = ({ children }) => {
         .exec(`container logs --details ${container.ID}`, [])
         .then((result) => {
           // console.log(result.stderr);
+          // this needs to be updated so that
           changeLogs(result.stderr);
         });
     });
@@ -96,7 +97,7 @@ const AppContextProvider = ({ children }) => {
   // fetch stats on a timer of 5 seconds
   const getStats = () => {
     ddClient.docker.cli.exec("stats", ["--no-stream", "-a"]).then((result) => {
-      // console.log(result);
+      console.log(typeof result.stdout);
       changeStats(result.stdout);
     });
   };
