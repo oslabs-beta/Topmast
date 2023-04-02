@@ -15,7 +15,6 @@ const DashboardView = (props: Props) => {
 <div>
     <div>
       <LogsDashboard />
-
     </div>
 </div>
   )
