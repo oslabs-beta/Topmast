@@ -42,28 +42,28 @@ export function App() {
 
     <DashboardView></DashboardView>
 
-      <Typography variant="body1" color="text.secondary" sx={{ mt: 2 }}>
-        Pressing the below button will trigger a request to the backend. Its
-        response will appear in the textarea.
-      </Typography>
-
-
-      
-      <Stack direction="row" alignItems="start" spacing={2} sx={{ mt: 4 }}>
-        <Button variant="contained" onClick={fetchAndDisplayResponse}>
-          Call backend
-        </Button>
-
-        <TextField
-          label="Backend response"
-          sx={{ width: 480 }}
-          disabled
-          multiline
-          variant="outlined"
-          minRows={5}
-          value={response ?? ""}
-        />
-      </Stack>
     </>
   );
 }
+      // <Typography variant="body1" color="text.secondary" sx={{ mt: 2 }}>
+      //   Pressing the below button will trigger a request to the backend. Its
+      //   response will appear in the textarea.
+      // </Typography>
+      //
+      //
+      // 
+      // <Stack direction="row" alignItems="start" spacing={2} sx={{ mt: 4 }}>
+      //   <Button variant="contained" onClick={fetchAndDisplayResponse}>
+      //     Call backend
+      //   </Button>
+      //
+      //   <TextField
+      //     label="Backend response"
+      //     sx={{ width: 480 }}
+      //     disabled
+      //     multiline
+      //     variant="outlined"
+      //     minRows={5}
+      //     value={response ?? ""}
+      //   />
+      // </Stack>
