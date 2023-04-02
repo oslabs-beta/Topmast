@@ -39,12 +39,6 @@ export function App() {
   return (
     <>
       <Typography variant="h3">Docker extension demo</Typography>
-      <Typography variant="body1" color="text.secondary" sx={{ mt: 2 }}>
-        This is a basic page rendered with MUI, using Docker's theme. Read the
-        MUI documentation to learn more. Using MUI in a conventional way and
-        avoiding custom styling will help make sure your extension continues to
-        look great as Docker's theme evolves.
-      </Typography>
 
     <DashboardView></DashboardView>
 
@@ -52,6 +46,9 @@ export function App() {
         Pressing the below button will trigger a request to the backend. Its
         response will appear in the textarea.
       </Typography>
+
+
+      
       <Stack direction="row" alignItems="start" spacing={2} sx={{ mt: 4 }}>
         <Button variant="contained" onClick={fetchAndDisplayResponse}>
           Call backend

@@ -1,4 +1,5 @@
 import React from "react";
+import { useAppContext } from '../context/AppContext';
 import { Box } from "@mui/material";
 import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
 import { useDemoData } from "@mui/x-data-grid-generator";
@@ -31,10 +32,22 @@ const LogsDashboard = () => {
   //   maxColumns: 6,
   // });
 
+  const { logs } = useAppContext();
+
+
+// logs:  time level msg,   requested per container
+// mega-log is not useful!
+
   return (
     <Box style={{ height: 400, width: "100%" }}>
       <h1>topmast</h1>
+
+      <div>LOGS!!
+        { logs }
+      </div>
+
       <DataGrid rows={rows} columns={columns} />
+
     </Box>
   );
 };
