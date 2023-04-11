@@ -102,6 +102,11 @@ const AppContextProvider = ({ children }) => {
     });
   };
 
+  const startContainer = (containerID) => {
+    ddClient.docker.cli.exec("container start", [containerID]);
+    console.log("started container " + containerID);
+  };
+
   // here we return our react component passing in the current state and all functions
   // that we want to make available
   return (
@@ -116,6 +121,7 @@ const AppContextProvider = ({ children }) => {
         getLogs,
         getStats,
         saveState,
+        startContainer,
       }}
     >
       {children}

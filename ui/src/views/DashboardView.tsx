@@ -7,9 +7,10 @@ import Button from "@mui/material/Button";
 import CircleIcon from "@mui/icons-material/Circle";
 import { red, green } from "@mui/material/colors";
 import { Typography } from "@mui/material";
+import { start } from "repl";
 
 const DashboardView = () => {
-  const { containers, logs, stats, ddClient } = useAppContext();
+  const { containers, logs, stats, ddClient, startContainer } = useAppContext();
   const [oneStats, setOneStats] = useState({});
 
   // useEffect(() => {
@@ -29,6 +30,30 @@ const DashboardView = () => {
               <Typography>{container.Image}</Typography>
               <Typography>{container.Created}</Typography>
               <Typography>State</Typography>
+              <Button
+                variant="outlined"
+                onClick={() => {
+                  startContainer(container.ID);
+                }}
+              >
+                START
+              </Button>
+              <Button
+                variant="outlined"
+                onClick={() => {
+                  killContainer(container.ID);
+                }}
+              >
+                KILL
+              </Button>
+              <Button
+                variant="contained"
+                onClick={() => {
+                  superKillContainer(container.ID);
+                }}
+              >
+                SUPERKILL
+              </Button>
               <CircleIcon
                 sx={{
                   color: container.State === "running" ? green[500] : red[500],
