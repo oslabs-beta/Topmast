@@ -1,4 +1,10 @@
 import React from "react";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
 import Button from "@mui/material/Button";
 import { Stack, TextField, Typography } from "@mui/material";
 import { useAppContext } from "./context/AppContext";
@@ -36,7 +42,8 @@ export function App() {
 
   return (
     <>
-      <Typography variant="h3">Docker extension demo</Typography>
+      <Typography variant="h3">Topmast: jb-router</Typography>
+
       <Typography variant="body1" color="text.secondary" sx={{ mt: 2 }}>
         This is a basic page rendered with MUI, using Docker's theme. Read the
         MUI documentation to learn more. Using MUI in a conventional way and
