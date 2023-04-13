@@ -21,10 +21,15 @@ const DashboardView = () => {
   const [oneStats, setOneStats] = useState({});
 
   // useEffect(() => {
-  //   for(const container of containers) {
+  //   for (const container of containers) {
   //     setOneStats({
-  //   [container.ID]: await ddClient.docker.cli.exec("stats", ["--no-stream", container.ID])}
-  //   )}},[]);
+  //       [container.ID]: ddClient.docker.cli.exec("stats", [
+  //         "--no-stream",
+  //         container.ID,
+  //       ]),
+  //     });
+  //   }
+  // }, []);
 
   return (
     <div>

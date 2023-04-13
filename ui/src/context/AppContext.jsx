@@ -11,10 +11,6 @@ function useDockerDesktopClient() {
 // This file creates our App Context Provider which allows for global
 // state management in our app
 
-// const [containers, setContainers] = React.useState<any[]>([]);
-// const [logs, setLogs] = React.useState<any[]>([]);
-// const [stats, setStats] = React.useState('');
-
 // Create an initial state for the app
 
 // this pulls the saved state from local storage. getItem returns
@@ -70,7 +66,7 @@ const AppContextProvider = ({ children }) => {
   };
 
   const getContainers = () => {
-    console.log("i am getting containers");
+    // console.log("i am getting containers");
     ddClient.docker.cli
       .exec("ps", ["--all", "--format", '"{{json .}}"'])
       .then((result) => {
@@ -97,8 +93,13 @@ const AppContextProvider = ({ children }) => {
   // fetch stats on a timer of 5 seconds
   const getStats = () => {
     ddClient.docker.cli.exec("stats", ["--no-stream", "-a"]).then((result) => {
-      console.log(typeof result.stdout);
-      changeStats(result.stdout);
+      // match to container using regex \d?\d?\d[.]\d\d[%]
+      // (\n[a-z0-9]+)|(\d?\d?\d[.]\d\d[%]) regex that grabs
+      // carriage return+id and CPU and MEM
+      console.log(result.stdout.match(/\d?\d?\d[.]\d\d[%]/g));
+      const data = result.stdout.match(/\W+\d?\d?\d[.]\d\d[%]/gi);
+      changeStats(data);
+      console.log(result.stdout, typeof result.stdout);
     });
   };
 
