@@ -1,6 +1,6 @@
 
 //should not have to install eslint in project root, should already work out of box.
-//add this file to root of project. 
+//add this file to root of project.
 
 {
   "root": true,
@@ -9,7 +9,7 @@
     "node": true,
     "es2021": true
   },
-  "extends": "eslint:recommended",
+  "extends": "eslint:recommended, prettier",
   "parserOptions": { "sourceType": "module" },
   "rules": {
     "indent": ["off", 2],
@@ -20,4 +20,3 @@
     "space-infix-ops": "warn"
   }
 }
-

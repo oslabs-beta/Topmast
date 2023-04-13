@@ -29,11 +29,9 @@ export function App() {
   };
   // this will run once and fetch logs and the container lists
   React.useEffect(() => {
-    console.log({ containers }, { logs }, { stats });
     getContainers();
     getLogs(containers);
     getStats();
-    console.log(stats);
   }, []);
 
   return (
@@ -51,7 +49,7 @@ export function App() {
       // </Typography>
       //
       //
-      // 
+      //
       // <Stack direction="row" alignItems="start" spacing={2} sx={{ mt: 4 }}>
       //   <Button variant="contained" onClick={fetchAndDisplayResponse}>
       //     Call backend

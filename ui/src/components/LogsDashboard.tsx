@@ -1,37 +1,26 @@
-import React from 'react'
-import { useAppContext } from '../context/AppContext'
-import { Box } from '@mui/material'
-import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid'
-import Card from '@mui/material/Card'
-import CardContent from '@mui/material/CardContent'
-import { Typography } from '@mui/material'
-
-
+import { useAppContext } from '../context/AppContext';
+import { Box } from '@mui/material';
+import LogCard from './LogCard';
 
 const LogsDashboard = () => {
-
-  const { logs } = useAppContext()
-
-
-  const logComps = []
-  for (const container in logs)
-        logComps.push(
-          <Card>
-            <CardContent>
-              <Typography><strong>Container ID:</strong> {container}</Typography>
-              <Typography><strong>Output:</strong> {logs[container][1] ? logs[container][1] : 'No output'}</Typography>
-              <Typography><strong>Err:</strong> {logs[container][2] ? logs[container][2] : 'No errors'}</Typography>
-            </CardContent>
-          </Card>
-        )
+  const { logs } = useAppContext();
 
   return (
     <Box style={{ height: 400, width: '100%' }}>
-      <h1>topmast</h1>
-      <div>{logComps}</div>
-
+      {Object.entries(logs).map(
+        ([containerId, { output, errors }]: any[], index: number) => {
+          return (
+            <LogCard
+              key={index}
+              containerId={containerId}
+              output={output}
+              errors={errors}
+            />
+          );
+        }
+      )}
     </Box>
-  )
-}
+  );
+};
 
-export default LogsDashboard
+export default LogsDashboard;
