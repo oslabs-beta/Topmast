@@ -107,6 +107,16 @@ const AppContextProvider = ({ children }) => {
     console.log("started container " + containerID);
   };
 
+  const killContainer = (containerID) => {
+    ddClient.docker.cli.exec("container stop", [containerID]);
+    console.log("killed container " + containerID);
+  };
+
+  const superKillContainer = (containerID) => {
+    ddClient.docker.cli.exec("container rm", ["-f", containerID]);
+    console.log("superkilled container " + containerID);
+  };
+
   // here we return our react component passing in the current state and all functions
   // that we want to make available
   return (
@@ -122,6 +132,8 @@ const AppContextProvider = ({ children }) => {
         getStats,
         saveState,
         startContainer,
+        killContainer,
+        superKillContainer,
       }}
     >
       {children}
