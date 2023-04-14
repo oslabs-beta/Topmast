@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAppContext } from '../context/AppContext';
 import { Box, Typography, Checkbox, FormControlLabel } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
@@ -8,8 +8,25 @@ const LogsDashboard = () => {
   const { logs, containers } = useAppContext();
   // Initialize selectedContainers state as an empty set
   const [selectedContainers, setSelectedContainers] = useState<Set<string>>(
-    new Set()
+    () => {
+      // Try to retrieve selectedContainers from localStorage
+      const savedSelectedContainers =
+        localStorage.getItem('selectedContainers');
+      // If found, return a new set from the saved JSON array
+      // If not found, return an empty set
+      return savedSelectedContainers
+        ? new Set(JSON.parse(savedSelectedContainers))
+        : new Set();
+    }
   );
+
+  // Save selectedContainers to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem(
+      'selectedContainers',
+      JSON.stringify(Array.from(selectedContainers))
+    );
+  }, [selectedContainers]);
 
   // Define handleCheckboxChange function that updates the selectedContainers state
   const handleCheckboxChange = (containerId: string, checked: boolean) => {
