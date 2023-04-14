@@ -8,7 +8,7 @@ const reducer = (state, action) => {
     case CHANGE_STATS: {
       const newState = { ...state, stats: action.payload };
       saveState(newState);
-      console.log(action.payload);
+      // console.log(action.payload);
       return newState;
     }
     case CHANGE_LOGS: {

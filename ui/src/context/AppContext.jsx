@@ -20,7 +20,7 @@ const savedState = localStorage.getItem("state");
 const initialState = {
   containers: [],
   logs: [],
-  stats: [],
+  stats: {},
 };
 
 // check to see if the saved state string has a value. if it does
@@ -93,13 +93,24 @@ const AppContextProvider = ({ children }) => {
   // fetch stats on a timer of 5 seconds
   const getStats = () => {
     ddClient.docker.cli.exec("stats", ["--no-stream", "-a"]).then((result) => {
-      // match to container using regex \d?\d?\d[.]\d\d[%]
-      // (\n[a-z0-9]+)|(\d?\d?\d[.]\d\d[%]) regex that grabs
-      // carriage return+id and CPU and MEM
-      console.log(result.stdout.match(/\d?\d?\d[.]\d\d[%]/g));
-      const data = result.stdout.match(/\W+\d?\d?\d[.]\d\d[%]/gi);
-      changeStats(data);
-      console.log(result.stdout, typeof result.stdout);
+      const parsedStats = result.stdout.replace(/([ ]{2,})|(\n)/g, ",");
+      const arr = parsedStats.split(",");
+      const containerStats = {};
+      for (let i = 1; i < 6; i++) {
+        // console.log(arr[i * 8]);
+        containerStats[arr[i * 8]] = {
+          NAME: arr[i * 8 + 1],
+          "CPU %": arr[i * 8 + 2],
+          "MEM USAGE / LIMIT": arr[i * 8 + 3],
+          "MEM %": arr[i * 8 + 4],
+          "NET I/O": arr[i * 8 + 5],
+          "BLOCK I/O": arr[i * 8 + 6],
+          PIDS: arr[i * 8 + 7],
+        };
+      }
+      // console.log(containerStats);
+      changeStats(containerStats);
+      // console.log(result.stdout, typeof result.stdout);
     });
   };
 
