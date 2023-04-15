@@ -32,15 +32,14 @@ export default function DashboardView() {
   return (
 
     <div>
-      <h2>Dashboard View</h2>
 
-      <div>This is the content on the dash view component</div>
+      <h3>Content on the dash view</h3>
 
       <Link to="container">Generic Container Link</Link>
 
-      <Typography variant="h3">Topmast: jb-router ooh yeah</Typography>
+      <Typography>Topmast: dash ooh yeah</Typography>
 
-      <div>
+      <div id="nav">
         dumb nav for testing: &nbsp;
         <Link to="/">Dashboard (/)</Link> &nbsp;|&nbsp;
         <Link to="container">Generic Container</Link>

@@ -18,7 +18,9 @@ export function App() {
 
   return (
     <>
-    
+
+    <h2>TopMast Universal Branding Ahoy</h2>
+
       <Routes>
         <Route path="/" element={ <DashboardView/> } />
         <Route path="container" element={ <ContainerView/> } />
