@@ -8,8 +8,11 @@
     "@docker/extension-api-client": "0.3.3",
     "@emotion/react": "11.10.4",
     "@emotion/styled": "11.10.4",
+    "@faker-js/faker": "^7.6.0",
     "@mui/material": "5.10.8",
+    "chart.js": "^4.2.1",
     "react": "^18.2.0",
+    "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.10.0"
   },

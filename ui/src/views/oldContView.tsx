@@ -1,7 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import { useAppContext } from "../context/AppContext";
-
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import { Typography } from "@mui/material";
@@ -22,7 +20,6 @@ import {
   import { Doughnut } from 'react-chartjs-2';
   // import Doughnut from '../components/Chart-Doughnut';
 
-  // FAKER FOR DEV TESTING
   import { faker } from '@faker-js/faker';
 
   ChartJS.register(
@@ -97,26 +94,30 @@ import {
     ],
   };
 
-// # end chart stuff #
+  // # end chart stuff #
 
+
+
+
+
+
+
+import LogsDashboard from "../components/LogsDashboard";
 
 type Props = {};
 
-export default function ContainerView(props: Props) {
+const ContainerView = (props: Props) => {
+  const { logs } = useAppContext();
 
+  return (
+    <div>
+      <Typography variant="h3">Individual Container View</Typography>
 
-    return (
       <div>
-
-
-        <h2>Container</h2>
-
-        <div>This is the content on the container view component</div>
-
-        <Link to="/">Link to Dashboard (/)</Link>
-
-
-
+        <LogsDashboard />
       </div>
-    );
-  }
+    </div>
+  );
+};
+
+export default ContainerView;
