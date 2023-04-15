@@ -42,7 +42,8 @@ export default function DashboardView() {
       <div>
         dumb nav for testing: &nbsp;
         <Link to='/'>Dashboard (/)</Link> &nbsp;|&nbsp;
-        <Link to='container'>Generic Container</Link>
+        <Link to='container'>Generic Container</Link>&nbsp;|&nbsp;
+        <Link to='containerlogs'>Container Logs</Link>
       </div>
 
       <Typography

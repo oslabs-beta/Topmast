@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useAppContext } from '../context/AppContext';
 import { Box, Typography, Checkbox, FormControlLabel } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import { Link } from 'react-router-dom';
 
 const LogsDashboard = () => {
   // Get logs and containers from AppContext
@@ -107,6 +108,8 @@ const LogsDashboard = () => {
   // Render LogsDashboard component
   return (
     <div style={{ height: '100vh', width: '100%' }}>
+      <Link to='/'>Link to Dashboard (/)</Link>
+
       {/* Display a title for the container selection section */}
       <Typography variant='h6'>Select containers:</Typography>
       {/* Render container checkboxes */}
