@@ -43,21 +43,13 @@ const DashboardView = () => {
               {/* CardActionArea will be our link to detail view, passing in the containerID as a prop */}
               <CardActionArea>
                 <CardContent>
-                  <Typography>Name: {container.Names}</Typography>
+                  <Typography variant="h3">{container.Names}</Typography>
                   <Typography>ID: {container.ID}</Typography>
                   <Typography>Image: {container.Image}</Typography>
                   {/* <Typography>Created: {container.Created}</Typography> */}
-                  <Typography>
-                    State
-                    <CircleIcon
-                      sx={{
-                        color:
-                          container.State === "running" ? green[500] : red[500],
-                      }}
-                    />
-                  </Typography>
+                  <Typography>State</Typography>
                   <Typography>Status: {container.Status}</Typography>
-                  <Typography sx={{ color: red[500] }}>
+                  <Typography sx={{ color: () => red[300] }}>
                     CPU %: {stats[container.ID]["CPU %"]}
                   </Typography>
                   <Typography>MEM %: {stats[container.ID]["MEM %"]}</Typography>
@@ -68,6 +60,12 @@ const DashboardView = () => {
                       </Typography>
                       );
                     })} */}
+                  <CircleIcon
+                    sx={{
+                      color:
+                        container.State === "running" ? green[500] : red[500],
+                    }}
+                  />
                   <Button
                     variant="outlined"
                     onClick={() => {
