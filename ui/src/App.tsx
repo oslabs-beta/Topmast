@@ -3,7 +3,9 @@ import Button from "@mui/material/Button";
 import { Stack, TextField, Typography } from "@mui/material";
 import { useAppContext } from "./context/AppContext";
 
-import DashboardView from "./views/DashboardView";
+import { Routes, Route, Link } from "react-router-dom"
+import DashboardView from "./views/DashboardView"
+import ContainerView from "./views/ContainerView"
 
 // Note: This line relies on Docker Desktop's presence as a host application.
 // If you're running this React app in a browser, it won't work properly.
@@ -12,33 +14,15 @@ import DashboardView from "./views/DashboardView";
 // and will user the reducer to change the global state
 
 export function App() {
-  const [response, setResponse] = React.useState<string>();
-  const {
-    containers,
-    logs,
-    stats,
-    getContainers,
-    getLogs,
-    getStats,
-    ddClient,
-  } = useAppContext();
 
-  const fetchAndDisplayResponse = async () => {
-    const result = await ddClient.extension.vm?.service?.get("/hello");
-    setResponse(JSON.stringify(result));
-  };
-  // this will run once and fetch logs and the container lists
-  React.useEffect(() => {
-    getContainers();
-    getLogs(containers);
-    getStats();
-  }, []);
 
   return (
     <>
-      <Typography variant="h3">Docker extension demo</Typography>
-
-    <DashboardView></DashboardView>
+    
+      <Routes>
+        <Route path="/" element={ <DashboardView/> } />
+        <Route path="container" element={ <ContainerView/> } />
+      </Routes>
 
     </>
   );
