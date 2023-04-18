@@ -6,7 +6,7 @@ import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import CircleIcon from '@mui/icons-material/Circle';
 import { red, green } from '@mui/material/colors';
-import { CardActionArea, Typography } from '@mui/material';
+import { CardActionArea, CardActions, Typography } from '@mui/material';
 
 const DashboardView = () => {
   const {
@@ -55,44 +55,46 @@ const DashboardView = () => {
                   </Typography>
                   <Typography>MEM %: {stats[container.ID]?.memory}</Typography>
                   {/* {Object.entries(stats[container.ID]).map((stat) => {
-                    return (
-                      <Typography>
-                      {stat[0]} : {stat[1]}
-                      </Typography>
-                      );
-                    })} */}
+                      return (
+                        <Typography>
+                        {stat[0]} : {stat[1]}
+                        </Typography>
+                        );
+                      })} */}
                   <CircleIcon
                     sx={{
                       color:
                         container.State === 'running' ? green[500] : red[500],
                     }}
                   />
-                  <Button
-                    variant="outlined"
-                    onClick={() => {
-                      startContainer(container.ID);
-                    }}
-                  >
-                    START
-                  </Button>
-                  <Button
-                    variant="outlined"
-                    onClick={() => {
-                      killContainer(container.ID);
-                    }}
-                  >
-                    KILL
-                  </Button>
-                  <Button
-                    variant="contained"
-                    onClick={() => {
-                      superKillContainer(container.ID);
-                    }}
-                  >
-                    SUPERKILL
-                  </Button>
                 </CardContent>
               </CardActionArea>
+              <CardActions>
+                <Button
+                  variant="outlined"
+                  onClick={() => {
+                    startContainer(container.ID);
+                  }}
+                >
+                  START
+                </Button>
+                <Button
+                  variant="outlined"
+                  onClick={() => {
+                    killContainer(container.ID);
+                  }}
+                >
+                  KILL
+                </Button>
+                <Button
+                  variant="contained"
+                  onClick={() => {
+                    superKillContainer(container.ID);
+                  }}
+                >
+                  SUPERKILL
+                </Button>
+              </CardActions>
             </Card>
           );
         }
