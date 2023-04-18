@@ -1,0 +1,22 @@
+
+//should not have to install eslint in project root, should already work out of box.
+//add this file to root of project.
+
+{
+  "root": true,
+  "ignorePatterns": ["**/test", "**/__tests__"],
+  "env": {
+    "node": true,
+    "es2021": true
+  },
+  "extends": "eslint:recommended, prettier",
+  "parserOptions": { "sourceType": "module" },
+  "rules": {
+    "indent": ["off", 2],
+    "no-unused-vars": ["off", { "vars": "local" }],
+    "prefer-const": "warn",
+    "quotes": ["warn", "single"],
+    "semi": ["off", "always"],
+    "space-infix-ops": "warn"
+  }
+}
