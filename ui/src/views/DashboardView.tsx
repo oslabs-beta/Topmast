@@ -1,7 +1,7 @@
 import { useAppContext } from '../context/AppContext';
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import CircleIcon from '@mui/icons-material/Circle';
@@ -34,25 +34,26 @@ const DashboardView = () => {
 
   return (
     <div>
+      <Link to="containerlogs">Link to Logs</Link>
       {/* // DashboardView */}
       {containers.map((container) => {
         // console.log(container);
         if (container.Image !== 'moby-metrics/topmast:latest') {
           return (
-            <Card>
+            <Card key={container.ID}>
               {/* CardActionArea will be our link to detail view, passing in the containerID as a prop */}
               <CardActionArea>
                 <CardContent>
-                  <Typography variant='h3'>{container.Names}</Typography>
+                  <Typography variant="h3">{container.Names}</Typography>
                   <Typography>ID: {container.ID}</Typography>
                   <Typography>Image: {container.Image}</Typography>
                   {/* <Typography>Created: {container.Created}</Typography> */}
                   <Typography>State</Typography>
                   <Typography>Status: {container.Status}</Typography>
                   <Typography sx={{ color: () => red[300] }}>
-                    CPU %: {stats[container.ID]['CPU %']}
+                    CPU %: {stats[container.ID]?.cpu}
                   </Typography>
-                  <Typography>MEM %: {stats[container.ID]['MEM %']}</Typography>
+                  <Typography>MEM %: {stats[container.ID]?.memory}</Typography>
                   {/* {Object.entries(stats[container.ID]).map((stat) => {
                     return (
                       <Typography>
@@ -67,7 +68,7 @@ const DashboardView = () => {
                     }}
                   />
                   <Button
-                    variant='outlined'
+                    variant="outlined"
                     onClick={() => {
                       startContainer(container.ID);
                     }}
@@ -75,7 +76,7 @@ const DashboardView = () => {
                     START
                   </Button>
                   <Button
-                    variant='outlined'
+                    variant="outlined"
                     onClick={() => {
                       killContainer(container.ID);
                     }}
@@ -83,7 +84,7 @@ const DashboardView = () => {
                     KILL
                   </Button>
                   <Button
-                    variant='contained'
+                    variant="contained"
                     onClick={() => {
                       superKillContainer(container.ID);
                     }}

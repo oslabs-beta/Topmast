@@ -94,19 +94,19 @@ const AppContextProvider = ({ children }) => {
   // this grabs a snapshot of the metrics of ALL containers
   // fetch stats on a timer of 5 seconds
   const getStats = () => {
-    ddClient.docker.cli.exec("stats", ["--no-stream", "-a"]).then((result) => {
-      const parsedStats = result.stdout.replace(/([ ]{2,})|(\n)/g, ",");
-      const arr = parsedStats.split(",");
+    ddClient.docker.cli.exec('stats', ['--no-stream', '-a']).then((result) => {
+      const parsedStats = result.stdout.replace(/([ ]{2,})|(\n)/g, ',');
+      const arr = parsedStats.split(',');
       const containerStats = {};
       for (let i = 1; i < 6; i++) {
         // console.log(arr[i * 8]);
         containerStats[arr[i * 8]] = {
           NAME: arr[i * 8 + 1],
-          "CPU %": arr[i * 8 + 2],
-          "MEM USAGE / LIMIT": arr[i * 8 + 3],
-          "MEM %": arr[i * 8 + 4],
-          "NET I/O": arr[i * 8 + 5],
-          "BLOCK I/O": arr[i * 8 + 6],
+          cpu: arr[i * 8 + 2],
+          'MEM USAGE / LIMIT': arr[i * 8 + 3],
+          memory: arr[i * 8 + 4],
+          'NET I/O': arr[i * 8 + 5],
+          'BLOCK I/O': arr[i * 8 + 6],
           PIDS: arr[i * 8 + 7],
         };
       }
@@ -117,18 +117,18 @@ const AppContextProvider = ({ children }) => {
   };
 
   const startContainer = (containerID) => {
-    ddClient.docker.cli.exec("container start", [containerID]);
-    console.log("started container " + containerID);
+    ddClient.docker.cli.exec('container start', [containerID]);
+    console.log('started container ' + containerID);
   };
 
   const killContainer = (containerID) => {
-    ddClient.docker.cli.exec("container stop", [containerID]);
-    console.log("killed container " + containerID);
+    ddClient.docker.cli.exec('container stop', [containerID]);
+    console.log('killed container ' + containerID);
   };
 
   const superKillContainer = (containerID) => {
-    ddClient.docker.cli.exec("container rm", ["-f", containerID]);
-    console.log("superkilled container " + containerID);
+    ddClient.docker.cli.exec('container rm', ['-f', containerID]);
+    console.log('superkilled container ' + containerID);
   };
 
   // here we return our react component passing in the current state and all functions
