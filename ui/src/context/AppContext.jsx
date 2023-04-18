@@ -1,7 +1,7 @@
-import { useContext, useReducer, createContext, useEffect } from "react";
-import { CHANGE_STATS, CHANGE_LOGS, CHANGE_CONTAINERS } from "./actions";
-import reducer from "./reducer";
-import { createDockerDesktopClient } from "@docker/extension-api-client";
+import { useContext, useReducer, createContext, useEffect } from 'react';
+import { CHANGE_STATS, CHANGE_LOGS, CHANGE_CONTAINERS } from './actions';
+import reducer from './reducer';
+import { createDockerDesktopClient } from '@docker/extension-api-client';
 
 const client = createDockerDesktopClient();
 
@@ -15,7 +15,8 @@ function useDockerDesktopClient() {
 
 // this pulls the saved state from local storage. getItem returns
 // a JSON
-const savedState = localStorage.getItem("state");
+// localStorage.clear()
+const savedState = localStorage.getItem('state');
 
 const initialState = {
   containers: [],
@@ -68,7 +69,7 @@ const AppContextProvider = ({ children }) => {
   const getContainers = () => {
     // console.log("i am getting containers");
     ddClient.docker.cli
-      .exec("ps", ["--all", "--format", '"{{json .}}"'])
+      .exec('ps', ['--all', '--format', '"{{json .}}"'])
       .then((result) => {
         // result.parseJsonLines() parses the output of the command into an array of objects
         // console.log(result);
@@ -76,15 +77,16 @@ const AppContextProvider = ({ children }) => {
       });
   };
 
+  // this grabs a snapshot of the logs of ALL containers
+  // ... is this useful?
   const getLogs = (containers) => {
     containers.forEach((container) => {
       // console.log(container.ID);
       ddClient.docker.cli
         .exec(`container logs --details ${container.ID}`, [])
         .then((result) => {
-          // console.log(result.stderr);
-          // this needs to be updated so that
-          changeLogs(result.stderr);
+          // console.log('result!', result)
+          changeLogs([container.ID, result.stdout, result.stderr]);
         });
     });
   };
@@ -154,7 +156,7 @@ const AppContextProvider = ({ children }) => {
 };
 
 const saveState = (state) => {
-  localStorage.setItem("state", JSON.stringify(state));
+  localStorage.setItem('state', JSON.stringify(state));
 };
 
 // custom hook to use app context. we write this here because otherwise we

@@ -12,13 +12,17 @@ const reducer = (state, action) => {
       return newState;
     }
     case CHANGE_LOGS: {
-      const newState = { ...state, logs: action.payload };
+      const newLogs = { ...state.logs };
+      const [containerId, output, errors] = action.payload;
+      newLogs[containerId] = {};
+      newLogs[containerId].output = output.split("\n") || [];
+      newLogs[containerId].errors = errors.split("\n") || [];
+      const newState = { ...state, logs: newLogs };
       saveState(newState);
       return newState;
     }
     case CHANGE_CONTAINERS: {
       const newState = { ...state, containers: action.payload };
-      // console.log("payload" + JSON.stringify(action.payload));
       saveState(newState);
       return newState;
     }
