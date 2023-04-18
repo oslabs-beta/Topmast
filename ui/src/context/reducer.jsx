@@ -1,5 +1,5 @@
-import { initialState, saveState } from './AppContext';
-import { CHANGE_LOGS, CHANGE_STATS, CHANGE_CONTAINERS } from './actions';
+import { initialState, saveState } from "./AppContext";
+import { CHANGE_LOGS, CHANGE_STATS, CHANGE_CONTAINERS } from "./actions";
 
 // we will use this reducer to make changes to our global state
 
@@ -13,9 +13,9 @@ const reducer = (state, action) => {
     case CHANGE_LOGS: {
       const newLogs = { ...state.logs };
       const [containerId, output, errors] = action.payload;
-      newLogs[containerId].output = output.split('\n') || [];
-      newLogs[containerId].errors = errors.split('\n') || [];
-      console.log(newLogs);
+      newLogs[containerId] = {};
+      newLogs[containerId].output = output.split("\n") || [];
+      newLogs[containerId].errors = errors.split("\n") || [];
       const newState = { ...state, logs: newLogs };
       saveState(newState);
       return newState;
