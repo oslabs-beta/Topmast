@@ -86,7 +86,7 @@ const AppContextProvider = ({ children }) => {
         .exec(`container logs --details ${container.ID}`, [])
         .then((result) => {
           // console.log('result!', result)
-          console.log(result);
+          // console.log(result);
           changeLogs([container.ID, result.stdout, result.stderr]);
         });
     });
@@ -94,26 +94,27 @@ const AppContextProvider = ({ children }) => {
 
   // this grabs a snapshot of the metrics of ALL containers
   // fetch stats on a timer of 5 seconds
-  const getStats = () => {
-    ddClient.docker.cli.exec('stats', ['--no-stream', '-a']).then((result) => {
-      const parsedStats = result.stdout.replace(/([ ]{2,})|(\n)/g, ',');
-      const arr = parsedStats.split(',');
-      const containerStats = {};
-      for (let i = 1; i < 6; i++) {
-        // console.log(arr[i * 8]);
-        containerStats[arr[i * 8]] = {
-          NAME: arr[i * 8 + 1],
-          cpu: arr[i * 8 + 2],
-          'MEM USAGE / LIMIT': arr[i * 8 + 3],
-          memory: arr[i * 8 + 4],
-          'NET I/O': arr[i * 8 + 5],
-          'BLOCK I/O': arr[i * 8 + 6],
-          PIDS: arr[i * 8 + 7],
-        };
-      }
-      // console.log(containerStats);
-      changeStats(containerStats);
-      // console.log(result.stdout, typeof result.stdout);
+  const getStats = (containers) => {
+    const containerStats = {};
+    containers.forEach((container) => {
+      ddClient.docker.cli
+        .exec('stats', ['--no-stream', container.ID])
+        .then((result) => {
+          const parsedStats = result.stdout.replace(/([ ]{2,})|(\n)/g, ',');
+          const arr = parsedStats.split(',');
+
+          // keeping this here for reference of what each array value means
+          // containerStats[arr[8]] = {
+          //   NAME: arr[9],
+          //   cpu: arr[10],
+          //   'MEM USAGE / LIMIT': arr[11],
+          //   memory: arr[12],
+          //   'NET I/O': arr[13],
+          //   'BLOCK I/O': arr[14],
+          //   PIDS: arr[15],
+          // };
+          changeStats([container.ID, arr[10], arr[12]]);
+        });
     });
   };
 
