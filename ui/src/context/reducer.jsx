@@ -16,16 +16,37 @@ const reducer = (state, action) => {
       // console.log(action.payload);
       return newState;
     }
+    // case CHANGE_LOGS: {
+    //   const newLogs = { ...state.logs };
+    //   const [containerId, output, errors] = action.payload;
+    //   newLogs[containerId] = {};
+    //   newLogs[containerId].output = output.split('\n') || [];
+    //   newLogs[containerId].errors = errors.split('\n') || [];
+    //   const newState = { ...state, logs: newLogs };
+    //   saveState(newState);
+    //   return newState;
+    // }
     case CHANGE_LOGS: {
       const newLogs = { ...state.logs };
       const [containerId, output, errors] = action.payload;
       newLogs[containerId] = {};
-      newLogs[containerId].output = output.split('\n') || [];
-      newLogs[containerId].errors = errors.split('\n') || [];
+      newLogs[containerId].output =
+        output.split('\n').map((line) => {
+          const timestamp = line.slice(0, 30).trim();
+          const content = line.slice(30).trim();
+          return { timestamp, content };
+        }) || [];
+      newLogs[containerId].errors =
+        errors.split('\n').map((line) => {
+          const timestamp = line.slice(0, 30).trim();
+          const content = line.slice(30).trim();
+          return { timestamp, content };
+        }) || [];
       const newState = { ...state, logs: newLogs };
       saveState(newState);
       return newState;
     }
+
     case CHANGE_CONTAINERS: {
       const newState = { ...state, containers: action.payload };
       saveState(newState);

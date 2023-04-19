@@ -81,9 +81,8 @@ const AppContextProvider = ({ children }) => {
   // ... is this useful?
   const getLogs = (containers) => {
     containers.forEach((container) => {
-      // console.log(container.ID);
       ddClient.docker.cli
-        .exec(`container logs --details ${container.ID}`, [])
+        .exec(`container logs --details --timestamps ${container.ID}`, [])
         .then((result) => {
           // console.log('result!', result)
           // console.log(result);
