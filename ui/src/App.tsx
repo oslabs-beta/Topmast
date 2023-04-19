@@ -8,7 +8,7 @@ export function App() {
     <>
 
     <h2>TopMast Cross-View Branding</h2>
-    
+
       <Routes>
         <Route path="/" element={<DashboardView />} />
         <Route path="container" element={<ContainerView />} />
