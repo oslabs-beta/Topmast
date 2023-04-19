@@ -11,10 +11,6 @@ function useDockerDesktopClient() {
 // This file creates our App Context Provider which allows for global
 // state management in our app
 
-// const [containers, setContainers] = React.useState<any[]>([]);
-// const [logs, setLogs] = React.useState<any[]>([]);
-// const [stats, setStats] = React.useState('');
-
 // Create an initial state for the app
 
 // this pulls the saved state from local storage. getItem returns
@@ -25,7 +21,7 @@ const savedState = localStorage.getItem('state');
 const initialState = {
   containers: [],
   logs: {},
-  stats: [],
+  stats: {},
 };
 
 // check to see if the saved state string has a value. if it does
@@ -71,11 +67,12 @@ const AppContextProvider = ({ children }) => {
   };
 
   const getContainers = () => {
-    console.log('i am getting containers');
+    // console.log("i am getting containers");
     ddClient.docker.cli
       .exec('ps', ['--all', '--format', '"{{json .}}"'])
       .then((result) => {
         // result.parseJsonLines() parses the output of the command into an array of objects
+        // console.log(result);
         changeContainers(result.parseJsonLines());
       });
   };
@@ -89,6 +86,7 @@ const AppContextProvider = ({ children }) => {
         .exec(`container logs --details ${container.ID}`, [])
         .then((result) => {
           // console.log('result!', result)
+          console.log(result);
           changeLogs([container.ID, result.stdout, result.stderr]);
         });
     });
@@ -98,9 +96,40 @@ const AppContextProvider = ({ children }) => {
   // fetch stats on a timer of 5 seconds
   const getStats = () => {
     ddClient.docker.cli.exec('stats', ['--no-stream', '-a']).then((result) => {
-      // console.log(result);
-      changeStats(result.stdout);
+      const parsedStats = result.stdout.replace(/([ ]{2,})|(\n)/g, ',');
+      const arr = parsedStats.split(',');
+      const containerStats = {};
+      for (let i = 1; i < 6; i++) {
+        // console.log(arr[i * 8]);
+        containerStats[arr[i * 8]] = {
+          NAME: arr[i * 8 + 1],
+          cpu: arr[i * 8 + 2],
+          'MEM USAGE / LIMIT': arr[i * 8 + 3],
+          memory: arr[i * 8 + 4],
+          'NET I/O': arr[i * 8 + 5],
+          'BLOCK I/O': arr[i * 8 + 6],
+          PIDS: arr[i * 8 + 7],
+        };
+      }
+      // console.log(containerStats);
+      changeStats(containerStats);
+      // console.log(result.stdout, typeof result.stdout);
     });
+  };
+
+  const startContainer = (containerID) => {
+    ddClient.docker.cli.exec('container start', [containerID]);
+    console.log('started container ' + containerID);
+  };
+
+  const killContainer = (containerID) => {
+    ddClient.docker.cli.exec('container stop', [containerID]);
+    console.log('killed container ' + containerID);
+  };
+
+  const superKillContainer = (containerID) => {
+    ddClient.docker.cli.exec('container rm', ['-f', containerID]);
+    console.log('superkilled container ' + containerID);
   };
 
   // here we return our react component passing in the current state and all functions
@@ -117,6 +146,9 @@ const AppContextProvider = ({ children }) => {
         getLogs,
         getStats,
         saveState,
+        startContainer,
+        killContainer,
+        superKillContainer,
       }}
     >
       {children}

@@ -1,0 +1,224 @@
+Containers
+[
+  {
+    "Id": "f6d0631bb99c07be290e1e25568a5ccec4b6e0d26c0e99929173526d6880b728",
+    "Names": [
+      "/epic_lovelace"
+    ],
+    "Image": "diamol/ch06-todo-list",
+    "ImageID": "sha256:7c15e2e46a6083dc4fe192f2a0fe5f71e075047ad5f9ec5544ab7dddcaf21170",
+    "Command": "dotnet ToDoList.dll",
+    "Created": 1676851408,
+    "Ports": [
+      {
+        "IP": "0.0.0.0",
+        "PrivatePort": 80,
+        "PublicPort": 8012,
+        "Type": "tcp"
+      }
+    ],
+    "Labels": {
+      "desktop.docker.io/mounts/0/Source": "/Users/bjorncarlsson/Desktop/Code/tutorials/diamol/databases",
+      "desktop.docker.io/mounts/0/SourceKind": "hostFile",
+      "desktop.docker.io/mounts/0/Target": "/-data"
+    },
+    "State": "running",
+    "Status": "Up 12 days",
+    "HostConfig": {
+      "NetworkMode": "default"
+    },
+    "NetworkSettings": {
+      "Networks": {
+        "bridge": {
+          "IPAMConfig": null,
+          "Links": null,
+          "Aliases": null,
+          "NetworkID": "d59647e60aa171c47fb2b6900b37a35eba2178c858e1d321a6435a39220b5c86",
+          "EndpointID": "0d076b7ce7b6c86647a4bad2942c6f4d163ea1884da7e576f57c33143825397d",
+          "Gateway": "172.17.0.1",
+          "IPAddress": "172.17.0.3",
+          "IPPrefixLen": 16,
+          "IPv6Gateway": "",
+          "GlobalIPv6Address": "",
+          "GlobalIPv6PrefixLen": 0,
+          "MacAddress": "02:42:ac:11:00:03",
+          "DriverOpts": null
+        }
+      }
+    },
+    "Mounts": [
+      {
+        "Type": "bind",
+        "Source": "/host_mnt/Users/bjorncarlsson/Desktop/Code/tutorials/diamol/databases",
+        "Destination": "/-data",
+        "Mode": "",
+        "RW": true,
+        "Propagation": "rprivate"
+      },
+      {
+        "Type": "volume",
+        "Name": "41a111f76a4461825791c128c09a1c6cd422fb834551a8f405b33d8d8742b61c",
+        "Source": "",
+        "Destination": "/data",
+        "Driver": "local",
+        "Mode": "",
+        "RW": true,
+        "Propagation": ""
+      }
+    ]
+  },
+  {
+    "Id": "8abd566fdac2dae67336138cf8a1677e75fdd9dc00bf8d81a942e2db49184e0b",
+    "Names": [
+      "/todo-v2"
+    ],
+    "Image": "diamol/ch06-todo-list:v2",
+    "ImageID": "sha256:efc39595e2f3b48bfe5eac8e282b1f070cd93fa1c9372af6a198b37d54676a8c",
+    "Command": "dotnet ToDoList.dll",
+    "Created": 1676850403,
+    "Ports": [
+      {
+        "IP": "0.0.0.0",
+        "PrivatePort": 80,
+        "PublicPort": 8011,
+        "Type": "tcp"
+      }
+    ],
+    "Labels": {},
+    "State": "running",
+    "Status": "Up 12 days",
+    "HostConfig": {
+      "NetworkMode": "default"
+    },
+    "NetworkSettings": {
+      "Networks": {
+        "bridge": {
+          "IPAMConfig": null,
+          "Links": null,
+          "Aliases": null,
+          "NetworkID": "d59647e60aa171c47fb2b6900b37a35eba2178c858e1d321a6435a39220b5c86",
+          "EndpointID": "b6b3c5f66b0a85d9c233a47fe7dd40671e67b41c1a45281720f483e3aaed42d8",
+          "Gateway": "172.17.0.1",
+          "IPAddress": "172.17.0.2",
+          "IPPrefixLen": 16,
+          "IPv6Gateway": "",
+          "GlobalIPv6Address": "",
+          "GlobalIPv6PrefixLen": 0,
+          "MacAddress": "02:42:ac:11:00:02",
+          "DriverOpts": null
+        }
+      }
+    },
+    "Mounts": [
+      {
+        "Type": "volume",
+        "Name": "todo-list",
+        "Source": "/var/lib/docker/volumes/todo-list/_data",
+        "Destination": "/data",
+        "Driver": "local",
+        "Mode": "z",
+        "RW": true,
+        "Propagation": ""
+      }
+    ]
+  }
+]
+
+stats
+{
+  read: '2023-03-04T19:11:45.059872291Z',
+  preread: '2023-03-04T19:11:44.05045093Z',
+  pids_stats: { current: 19, limit: 18446744073709552000 },
+  blkio_stats: {
+    io_service_bytes_recursive: [ [Object], [Object] ],
+    io_serviced_recursive: null,
+    io_queue_recursive: null,
+    io_service_time_recursive: null,
+    io_wait_time_recursive: null,
+    io_merged_recursive: null,
+    io_time_recursive: null,
+    sectors_recursive: null
+  },
+  num_procs: 0,
+  storage_stats: {},
+  cpu_stats: {
+    cpu_usage: {
+      total_usage: 1262246693000,
+      usage_in_kernelmode: 654120926000,
+      usage_in_usermode: 608125767000
+    },
+    system_cpu_usage: 1993766110000000,
+    online_cpus: 4,
+    throttling_data: { periods: 0, throttled_periods: 0, throttled_time: 0 }
+  },
+  precpu_stats: {
+    cpu_usage: {
+      total_usage: 1262243821000,
+      usage_in_kernelmode: 654118810000,
+      usage_in_usermode: 608125010000
+    },
+    system_cpu_usage: 1993762070000000,
+    online_cpus: 4,
+    throttling_data: { periods: 0, throttled_periods: 0, throttled_time: 0 }
+  },
+  memory_stats: {
+    usage: 48783360,
+    stats: {
+      active_anon: 4096,
+      active_file: 24576,
+      anon: 46440448,
+      anon_thp: 0,
+      file: 32768,
+      file_dirty: 0,
+      file_mapped: 0,
+      file_writeback: 0,
+      inactive_anon: 46436352,
+      inactive_file: 8192,
+      kernel_stack: 311296,
+      pgactivate: 2,
+      pgdeactivate: 0,
+      pgfault: 16467,
+      pglazyfree: 0,
+      pglazyfreed: 0,
+      pgmajfault: 0,
+      pgrefill: 0,
+      pgscan: 0,
+      pgsteal: 0,
+      shmem: 0,
+      slab: 1277040,
+      slab_reclaimable: 601904,
+      slab_unreclaimable: 675136,
+      sock: 0,
+      thp_collapse_alloc: 0,
+      thp_fault_alloc: 0,
+      unevictable: 0,
+      workingset_activate: 0,
+      workingset_nodereclaim: 0,
+      workingset_refault: 0
+    },
+    limit: 4124512256
+  },
+  name: '/epic_lovelace',
+  id: 'f6d0631bb99c07be290e1e25568a5ccec4b6e0d26c0e99929173526d6880b728',
+  networks: {
+    eth0: {
+      rx_bytes: 13130,
+      rx_packets: 196,
+      rx_errors: 0,
+      rx_dropped: 0,
+      tx_bytes: 2935,
+      tx_packets: 5,
+      tx_errors: 0,
+      tx_dropped: 0
+    }
+  }
+}
+
+logs
+ time="2023-03-30T01:26:13Z" level=info msg="Starting listening on /run/guest-services/ext.sock\n"
+ time="2023-03-30T01:26:13Z" level=info msg="Bugsnag configuration added successfully."
+ time="2023-03-30T01:26:13Z" level=info msg="Successfully pulled all the images"
+ time="2023-03-30T01:26:13Z" level=info msg="Bugsnag handler configured successfully."
+ ⇨ http server started on /run/guest-services/ext.sock
+ {"time":"2023-03-31T01:48:27.061873544Z","id":"","host":"localhost","method":"GET","uri":"/progress","user_agent":"Docker-Desktop/4.16.2 (Mac; arm64)","status":200,"error":"","latency":4015375,"latency_human":"4.015375ms","bytes_in":0,"bytes_out":3}
+ {"time":"2023-03-31T01:48:27.085588044Z","id":"","host":"localhost","method":"GET","uri":"/volumes","user_agent":"Docker-Desktop/4.16.2 (Mac; arm64)","status":200,"error":"","latency":28868000,"latency_human":"28.868ms","bytes_in":0,"bytes_out":1282}
