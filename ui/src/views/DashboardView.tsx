@@ -1,11 +1,14 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import Button from '@mui/material/Button';
-import { Stack, TextField, Typography } from '@mui/material';
 import { useAppContext } from '../context/AppContext';
+import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import Button from '@mui/material/Button';
+import CircleIcon from '@mui/icons-material/Circle';
+import { red, green } from '@mui/material/colors';
+import { CardActionArea, CardActions, Typography } from '@mui/material';
 
-export default function DashboardView() {
-  const [response, setResponse] = React.useState<string>();
+const DashboardView = () => {
   const {
     containers,
     logs,
@@ -14,76 +17,90 @@ export default function DashboardView() {
     getLogs,
     getStats,
     ddClient,
+    startContainer,
+    killContainer,
+    superKillContainer,
   } = useAppContext();
+  const [oneStats, setOneStats] = useState({});
 
-  const fetchAndDisplayResponse = async () => {
-    const result = await ddClient.extension.vm?.service?.get('/hello');
-    setResponse(JSON.stringify(result));
-  };
-  // this will run once and fetch logs and the container lists
-  React.useEffect(() => {
-    console.log({ containers }, { logs }, { stats });
-    getContainers();
-    getLogs(containers);
-    getStats();
-    console.log(stats);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      getContainers();
+      getLogs(containers);
+      getStats();
+    }, 1000);
+    return () => clearInterval(interval);
   }, []);
 
   return (
     <div>
-
-      <h3>Content on the dash view</h3>
-
-      <Link to='container'>Generic Container Link</Link>
-
-      <Typography>Topmast: dash ooh yeah</Typography>
-
-      <div id="nav">
-        dumb nav for testing: &nbsp;
-        <Link to='/'>Dashboard (/)</Link> &nbsp;|&nbsp;
-        <Link to='container'>Generic Container</Link>&nbsp;|&nbsp;
-        <Link to='containerlogs'>Container Logs</Link>
-      </div>
-
-      <Typography
-        variant='body1'
-        color='text.secondary'
-        sx={{ mt: 2 }}>
-        This is a basic page rendered with MUI, using Docker's theme. Read the
-        MUI documentation to learn more. Using MUI in a conventional way and
-        avoiding custom styling will help make sure your extension continues to
-        look great as Docker's theme evolves.
-      </Typography>
-
-      <Typography
-        variant='body1'
-        color='text.secondary'
-        sx={{ mt: 2 }}>
-        Pressing the below button will trigger a request to the backend. Its
-        response will appear in the textarea.
-      </Typography>
-
-      <Stack
-        direction='row'
-        alignItems='start'
-        spacing={2}
-        sx={{ mt: 4 }}>
-        <Button
-          variant='contained'
-          onClick={fetchAndDisplayResponse}>
-          Call backend
-        </Button>
-
-        <TextField
-          label='Backend response'
-          sx={{ width: 480 }}
-          disabled
-          multiline
-          variant='outlined'
-          minRows={5}
-          value={response ?? ''}
-        />
-      </Stack>
+      <Link to="containerlogs">Link to Logs</Link>
+      {/* // DashboardView */}
+      {containers.map((container) => {
+        // console.log(container);
+        if (container.Image !== 'moby-metrics/topmast:latest') {
+          return (
+            <Card key={container.ID}>
+              {/* CardActionArea will be our link to detail view, passing in the containerID as a prop */}
+              <CardActionArea>
+                <CardContent>
+                  <Typography variant="h3">{container.Names}</Typography>
+                  <Typography>ID: {container.ID}</Typography>
+                  <Typography>Image: {container.Image}</Typography>
+                  {/* <Typography>Created: {container.Created}</Typography> */}
+                  <Typography>State</Typography>
+                  <Typography>Status: {container.Status}</Typography>
+                  <Typography sx={{ color: () => red[300] }}>
+                    CPU %: {stats[container.ID]?.cpu}
+                  </Typography>
+                  <Typography>MEM %: {stats[container.ID]?.memory}</Typography>
+                  {/* {Object.entries(stats[container.ID]).map((stat) => {
+                      return (
+                        <Typography>
+                        {stat[0]} : {stat[1]}
+                        </Typography>
+                        );
+                      })} */}
+                  <CircleIcon
+                    sx={{
+                      color:
+                        container.State === 'running' ? green[500] : red[500],
+                    }}
+                  />
+                </CardContent>
+              </CardActionArea>
+              <CardActions>
+                <Button
+                  variant="outlined"
+                  onClick={() => {
+                    startContainer(container.ID);
+                  }}
+                >
+                  START
+                </Button>
+                <Button
+                  variant="outlined"
+                  onClick={() => {
+                    killContainer(container.ID);
+                  }}
+                >
+                  KILL
+                </Button>
+                <Button
+                  variant="contained"
+                  onClick={() => {
+                    superKillContainer(container.ID);
+                  }}
+                >
+                  SUPERKILL
+                </Button>
+              </CardActions>
+            </Card>
+          );
+        }
+      })}
     </div>
   );
-}
+};
+
+export default DashboardView;
