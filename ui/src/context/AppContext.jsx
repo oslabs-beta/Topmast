@@ -1,5 +1,5 @@
 import { useContext, useReducer, createContext, useEffect } from 'react';
-import { CHANGE_STATS, CHANGE_LOGS, CHANGE_CONTAINERS } from './actions';
+import { CHANGE_STATS, CHANGE_LOGS, CHANGE_CURRENT_CONTAINER } from './actions';
 import reducer from './reducer';
 import { createDockerDesktopClient } from '@docker/extension-api-client';
 
@@ -26,6 +26,7 @@ const initialState = {
   containers: [],
   logs: {},
   stats: [],
+  currentContainer: ''
 };
 
 // check to see if the saved state string has a value. if it does
@@ -63,9 +64,10 @@ const AppContextProvider = ({ children }) => {
     });
   };
 
-  const changeContainers = (result) => {
+
+  const changeCurrentContainer = (result) => {
     dispatch({
-      type: CHANGE_CONTAINERS,
+      type: CHANGE_CURRENT_CONTAINER,
       payload: result,
     });
   };
@@ -94,6 +96,12 @@ const AppContextProvider = ({ children }) => {
         });
     });
   };
+
+  const setCurrentContainer = (id) => {
+    changeCurrentContainer(id)
+  }
+
+
 
   // this grabs a snapshot of the metrics of ALL containers
   // fetch stats on a timer of 5 seconds
@@ -130,7 +138,8 @@ const AppContextProvider = ({ children }) => {
         ddClient,
         changeStats,
         changeLogs,
-        changeContainers,
+        changeCurrentContainer,
+        setCurrentContainer,
         getContainers,
         getLogs,
         getStats,

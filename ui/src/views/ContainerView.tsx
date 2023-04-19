@@ -6,6 +6,8 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import { Typography } from "@mui/material";
 
+
+
 // ## CHART STUFF ##
 import {
   Chart as ChartJS,
@@ -99,9 +101,24 @@ export const doughData = {
 
 // # end chart stuff #
 
-type Props = {};
+type Props = { container.ID };
 
 export default function ContainerView(props: Props) {
+
+    const {
+        containers,
+        logs,
+        stats,
+        getContainers,
+        currentContainer,
+        getLogs,
+        getStats,
+        ddClient,
+        startContainer,
+        killContainer,
+        superKillContainer,
+    } = useAppContext();
+
   return (
     <>
       <h3>Content in the container view</h3>
