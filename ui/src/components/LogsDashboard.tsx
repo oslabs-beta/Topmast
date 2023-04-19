@@ -48,48 +48,17 @@ const LogsDashboard = () => {
   //   or include all logs if selectedContainers is empty
   // - Use flatMap() to create a new array of log rows, with each row including the containerId,
   //   log type (Output/Error), and log content
-  // const combinedRows = Object.entries(logs)
-  //   .filter(
-  //     ([containerId]) =>
-  //       selectedContainers.size === 0 || selectedContainers.has(containerId)
-  //   )
-  //   .flatMap(([containerId, { output, errors }]: any[]) => {
-  //     // Check if output and errors are defined, if not, set them to empty arrays
-  //     output = output || [];
-  //     errors = errors || [];
-
-  //     // For each container, create outputRows from output logs
-  //     const outputRows = output.map((line, index) => {
-  //       return {
-  //         id: `${containerId}-o${index}`,
-  //         containerId,
-  //         type: 'Output',
-  //         content: line,
-  //       };
-  //     });
-
-  //     // For each container, create errorRows from error logs
-  //     const errorRows = errors.map((line, index) => {
-  //       return {
-  //         id: `${containerId}-e${index}`,
-  //         containerId,
-  //         type: 'Error',
-  //         content: line,
-  //       };
-  //     });
-
-  //     // Combine outputRows and errorRows into a single array
-  //     return [...outputRows, ...errorRows];
-  //   });
   const combinedRows = Object.entries(logs)
     .filter(
       ([containerId]) =>
         selectedContainers.size === 0 || selectedContainers.has(containerId)
     )
     .flatMap(([containerId, { output, errors }]: any[]) => {
+      // Check if output and errors are defined, if not, set them to empty arrays
       output = output || [];
       errors = errors || [];
 
+      // For each container, create outputRows from output logs
       const outputRows = output.map(({ timestamp, content }, index) => {
         return {
           id: `${containerId}-o${index}`,
@@ -100,6 +69,7 @@ const LogsDashboard = () => {
         };
       });
 
+      // For each container, create errorRows from error logs
       const errorRows = errors.map(({ timestamp, content }, index) => {
         return {
           id: `${containerId}-e${index}`,
@@ -110,31 +80,10 @@ const LogsDashboard = () => {
         };
       });
 
+      // Combine outputRows and errorRows into a single array
       return [...outputRows, ...errorRows];
     });
 
-  // Define columns for the DataGrid
-  // const columns: GridColDef[] = [
-  //   { field: 'containerId', headerName: 'Container ID', width: 150 },
-  //   { field: 'type', headerName: 'Type', width: 100 },
-  //   {
-  //     field: 'content',
-  //     headerName: 'Content',
-  //     flex: 1,
-  //     renderCell: (params) => {
-  //       // Split log content into separate lines
-  //       const lines = params.value.split('\n');
-  //       // Render each line of log content as a Typography component
-  //       return (
-  //         <div>
-  //           {lines.map((line, index) => (
-  //             <Typography key={index}>{line}</Typography>
-  //           ))}
-  //         </div>
-  //       );
-  //     },
-  //   },
-  // ];
   const columns: GridColDef[] = [
     { field: 'timestamp', headerName: 'Timestamp', width: 200 },
     { field: 'containerId', headerName: 'Container ID', width: 150 },
