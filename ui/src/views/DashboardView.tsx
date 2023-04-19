@@ -27,7 +27,7 @@ const DashboardView = () => {
     const interval = setInterval(() => {
       getContainers();
       getLogs(containers);
-      getStats();
+      getStats(containers);
     }, 1000);
     return () => clearInterval(interval);
   }, []);
