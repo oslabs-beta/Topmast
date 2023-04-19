@@ -11,8 +11,8 @@ export function App() {
 
       <Routes>
         <Route path="/" element={<DashboardView />} />
-        <Route path="container" element={<ContainerView />} />
-        <Route path="containerlogs" element={<LogsDashboard />} />
+        <Route path="/container" element={<ContainerView />} />
+        <Route path="/containerlogs" element={<LogsDashboard />} />
       </Routes>
     </>
   );
