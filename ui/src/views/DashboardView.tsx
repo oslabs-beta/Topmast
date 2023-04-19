@@ -34,7 +34,7 @@ const DashboardView = () => {
 
   return (
     <div>
-      <Link to="containerlogs">Link to Logs</Link>
+      <Link to="container">Link to generic container</Link> | <Link to="containerlogs">Link to Logs</Link>
       {/* // DashboardView */}
       {containers.map((container) => {
         // console.log(container);

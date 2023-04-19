@@ -103,11 +103,11 @@ type Props = {};
 
 export default function ContainerView(props: Props) {
   return (
-    <div>
-
+    <>
       <h3>Content in the container view</h3>
-
       <Link to="/">Link to Dashboard (/)</Link>
+
+
 
       <div
         style={{
@@ -124,6 +124,8 @@ export default function ContainerView(props: Props) {
         <Doughnut data={doughData} />
       </div>
 
-    </div>
+
+
+    </>
   );
 }
