@@ -26,7 +26,7 @@ const DashboardView = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       getContainers();
-      // getLogs();
+      getLogs(containers);
       getStats();
     }, 1000);
     return () => clearInterval(interval);

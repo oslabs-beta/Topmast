@@ -20,7 +20,7 @@ const savedState = localStorage.getItem('state');
 
 const initialState = {
   containers: [],
-  logs: [],
+  logs: {},
   stats: {},
 };
 
@@ -86,6 +86,7 @@ const AppContextProvider = ({ children }) => {
         .exec(`container logs --details ${container.ID}`, [])
         .then((result) => {
           // console.log('result!', result)
+          console.log(result);
           changeLogs([container.ID, result.stdout, result.stderr]);
         });
     });
