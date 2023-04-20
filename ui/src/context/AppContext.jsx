@@ -78,7 +78,8 @@ const AppContextProvider = ({ children }) => {
       .exec('ps', ['--all', '--format', '"{{json .}}"'])
       .then((result) => {
         // result.parseJsonLines() parses the output of the command into an array of objects
-        changeContainers(result.parseJsonLines());
+        // removed changeContainers
+        // changeContainers(result.parseJsonLines());
       });
   };
 
