@@ -1,5 +1,5 @@
 import { useContext, useReducer, createContext, useEffect } from 'react';
-import { CHANGE_STATS, CHANGE_LOGS, CHANGE_CONTAINERS } from './actions';
+import { CHANGE_STATS, CHANGE_LOGS, CHANGE_CURRENT_CONTAINER } from './actions';
 import reducer from './reducer';
 import { createDockerDesktopClient } from '@docker/extension-api-client';
 
@@ -11,6 +11,10 @@ function useDockerDesktopClient() {
 // This file creates our App Context Provider which allows for global
 // state management in our app
 
+// const [containers, setContainers] = React.useState<any[]>([]);
+// const [logs, setLogs] = React.useState<any[]>([]);
+// const [stats, setStats] = React.useState('');
+
 // Create an initial state for the app
 
 // this pulls the saved state from local storage. getItem returns
@@ -21,7 +25,8 @@ const savedState = localStorage.getItem('state');
 const initialState = {
   containers: [],
   logs: {},
-  stats: {},
+  stats: [],
+  currentContainer: ''
 };
 
 // check to see if the saved state string has a value. if it does
@@ -59,21 +64,22 @@ const AppContextProvider = ({ children }) => {
     });
   };
 
-  const changeContainers = (result) => {
+
+  const changeCurrentContainer = (result) => {
     dispatch({
-      type: CHANGE_CONTAINERS,
+      type: CHANGE_CURRENT_CONTAINER,
       payload: result,
     });
   };
 
   const getContainers = () => {
-    // console.log("i am getting containers");
+    console.log('i am getting containers');
     ddClient.docker.cli
       .exec('ps', ['--all', '--format', '"{{json .}}"'])
       .then((result) => {
         // result.parseJsonLines() parses the output of the command into an array of objects
-        // console.log(result);
-        changeContainers(result.parseJsonLines());
+        // removed changeContainers
+        // changeContainers(result.parseJsonLines());
       });
   };
 
@@ -91,6 +97,12 @@ const AppContextProvider = ({ children }) => {
         });
     });
   };
+
+  const setCurrentContainer = (id) => {
+    changeCurrentContainer(id)
+  }
+
+
 
   // this grabs a snapshot of the metrics of ALL containers
   // fetch stats on a timer of 5 seconds
@@ -118,21 +130,6 @@ const AppContextProvider = ({ children }) => {
     });
   };
 
-  const startContainer = (containerID) => {
-    ddClient.docker.cli.exec('container start', [containerID]);
-    console.log('started container ' + containerID);
-  };
-
-  const killContainer = (containerID) => {
-    ddClient.docker.cli.exec('container stop', [containerID]);
-    console.log('killed container ' + containerID);
-  };
-
-  const superKillContainer = (containerID) => {
-    ddClient.docker.cli.exec('container rm', ['-f', containerID]);
-    console.log('superkilled container ' + containerID);
-  };
-
   // here we return our react component passing in the current state and all functions
   // that we want to make available
   return (
@@ -142,14 +139,12 @@ const AppContextProvider = ({ children }) => {
         ddClient,
         changeStats,
         changeLogs,
-        changeContainers,
+        changeCurrentContainer,
+        setCurrentContainer,
         getContainers,
         getLogs,
         getStats,
         saveState,
-        startContainer,
-        killContainer,
-        superKillContainer,
       }}
     >
       {children}
