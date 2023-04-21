@@ -35,9 +35,9 @@ const DashboardView = () => {
 
   return (
     <div>
-      <Link to='/'>Link to Root</Link> |&nbsp;
-      <Link to='/container'>Link to generic container</Link> |&nbsp;
-      <Link to='/containerlogs'>Link to Logs</Link>
+      <Link to="/">Link to Root</Link> |&nbsp;
+      <Link to="/container">Link to generic container</Link> |&nbsp;
+      <Link to="/containerlogs">Link to Logs</Link>
       {containers.map((container) => {
         if (container.Image !== 'moby-metrics/topmast:latest') {
           return (
@@ -45,11 +45,11 @@ const DashboardView = () => {
               {/* CardActionArea will be our link to detail view, passing in the containerID as a prop */}
               <CardActionArea>
                 <CardContent>
-                  <Typography variant='h3'>{container.Names}</Typography>
+                  <Typography variant="h3">{container.Names}</Typography>
 
                   {/* use arrow function to set id during map */}
                   <Link
-                    to='/container'
+                    to="/container"
                     onClick={() => setCurrentContainer(container.ID)}
                   >
                     Go to {container.ID}
@@ -81,7 +81,7 @@ const DashboardView = () => {
               </CardActionArea>
               <CardActions>
                 <Button
-                  variant='outlined'
+                  variant="outlined"
                   onClick={() => {
                     startContainer(container.ID);
                   }}
@@ -89,7 +89,7 @@ const DashboardView = () => {
                   START
                 </Button>
                 <Button
-                  variant='outlined'
+                  variant="outlined"
                   onClick={() => {
                     killContainer(container.ID);
                   }}
@@ -97,12 +97,12 @@ const DashboardView = () => {
                   KILL
                 </Button>
                 <Button
-                  variant='contained'
+                  variant="contained"
                   onClick={() => {
                     superKillContainer(container.ID);
                   }}
                 >
-                  SUPERKILL
+                  FORCE REMOVE
                 </Button>
               </CardActions>
             </Card>

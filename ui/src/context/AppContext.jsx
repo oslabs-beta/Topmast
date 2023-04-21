@@ -26,7 +26,7 @@ const initialState = {
   containers: [],
   logs: {},
   stats: [],
-  currentContainer: ''
+  currentContainer: '',
 };
 
 // check to see if the saved state string has a value. if it does
@@ -64,7 +64,6 @@ const AppContextProvider = ({ children }) => {
     });
   };
 
-
   const changeCurrentContainer = (result) => {
     dispatch({
       type: CHANGE_CURRENT_CONTAINER,
@@ -99,10 +98,8 @@ const AppContextProvider = ({ children }) => {
   };
 
   const setCurrentContainer = (id) => {
-    changeCurrentContainer(id)
-  }
-
-
+    changeCurrentContainer(id);
+  };
 
   // this grabs a snapshot of the metrics of ALL containers
   // fetch stats on a timer of 5 seconds
@@ -130,6 +127,21 @@ const AppContextProvider = ({ children }) => {
     });
   };
 
+  const startContainer = (containerID) => {
+    ddClient.docker.cli.exec('container start', [containerID]);
+    console.log('started container ' + containerID);
+  };
+
+  const killContainer = (containerID) => {
+    ddClient.docker.cli.exec('container stop', [containerID]);
+    console.log('killed container ' + containerID);
+  };
+
+  const superKillContainer = (containerID) => {
+    ddClient.docker.cli.exec('container rm', ['-f', containerID]);
+    console.log('superkilled container ' + containerID);
+  };
+
   // here we return our react component passing in the current state and all functions
   // that we want to make available
   return (
@@ -145,6 +157,9 @@ const AppContextProvider = ({ children }) => {
         getLogs,
         getStats,
         saveState,
+        startContainer,
+        killContainer,
+        superKillContainer,
       }}
     >
       {children}
