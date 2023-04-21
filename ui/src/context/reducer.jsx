@@ -1,5 +1,10 @@
 import { initialState, saveState } from './AppContext';
-import { CHANGE_LOGS, CHANGE_STATS, CHANGE_CURRENT_CONTAINER } from './actions';
+import {
+  CHANGE_LOGS,
+  CHANGE_STATS,
+  CHANGE_CONTAINERS,
+  CHANGE_CURRENT_CONTAINER,
+} from './actions';
 
 // we will use this reducer to make changes to our global state
 
@@ -26,13 +31,17 @@ const reducer = (state, action) => {
       saveState(newState);
       return newState;
     }
+    case CHANGE_CONTAINERS: {
+      const newState = { ...state, containers: action.payload };
+      // console.log("payload" + JSON.stringify(action.payload));
+      saveState(newState);
+      return newState;
+    }
     case CHANGE_CURRENT_CONTAINER: {
       const newState = { ...state, currentContainer: action.payload };
       saveState(newState);
       return newState;
     }
-
-
   }
 };
 
