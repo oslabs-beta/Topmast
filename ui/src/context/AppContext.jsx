@@ -1,5 +1,10 @@
 import { useContext, useReducer, createContext, useEffect } from 'react';
-import { CHANGE_STATS, CHANGE_LOGS, CHANGE_CURRENT_CONTAINER } from './actions';
+import {
+  CHANGE_STATS,
+  CHANGE_LOGS,
+  CHANGE_CONTAINERS,
+  CHANGE_CURRENT_CONTAINER,
+} from './actions';
 import reducer from './reducer';
 import { createDockerDesktopClient } from '@docker/extension-api-client';
 
@@ -71,6 +76,13 @@ const AppContextProvider = ({ children }) => {
     });
   };
 
+  const changeContainers = (result) => {
+    dispatch({
+      type: CHANGE_CONTAINERS,
+      payload: result,
+    });
+  };
+
   const getContainers = () => {
     console.log('i am getting containers');
     ddClient.docker.cli
@@ -78,7 +90,7 @@ const AppContextProvider = ({ children }) => {
       .then((result) => {
         // result.parseJsonLines() parses the output of the command into an array of objects
         // removed changeContainers
-        // changeContainers(result.parseJsonLines());
+        changeContainers(result.parseJsonLines());
       });
   };
 
@@ -151,6 +163,7 @@ const AppContextProvider = ({ children }) => {
         ddClient,
         changeStats,
         changeLogs,
+        changeContainers,
         changeCurrentContainer,
         setCurrentContainer,
         getContainers,
