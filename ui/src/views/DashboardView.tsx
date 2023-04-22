@@ -29,7 +29,7 @@ const DashboardView = () => {
       getContainers();
       getLogs(containers);
       getStats(containers);
-    }, 1000);
+    }, 31000);
     return () => clearInterval(interval);
   }, []);
 
@@ -38,11 +38,14 @@ const DashboardView = () => {
       <Link to="/">Link to Root</Link> |&nbsp;
       <Link to="/container">Link to generic container</Link> |&nbsp;
       <Link to="/containerlogs">Link to Logs</Link>
-      {containers.map((container) => {
+
+      {containers.map((container,index) => {
         if (container.Image !== 'moby-metrics/topmast:latest') {
           return (
+
             <Card key={container.ID}>
               {/* CardActionArea will be our link to detail view, passing in the containerID as a prop */}
+
               <CardActionArea>
                 <CardContent>
                   <Typography variant="h3">{container.Names}</Typography>

@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
 
+import { Typography } from '@mui/material';
+
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -30,7 +32,11 @@ ChartJS.register(
 );
 
 const ContainerView = () => {
-  const { currentContainer } = useAppContext();
+  const {
+    currentContainer,
+    containers,
+    stats,
+  } = useAppContext();
 
   // ## Chart Demo Data ##
   const barOptions = {
@@ -105,12 +111,18 @@ const ContainerView = () => {
 
   // ## end chart demo data
 
+
+
   return (
     <>
       <Link to='/'>Link to Root</Link> |&nbsp;
       <Link to='/container'>Link to generic container</Link> |&nbsp;
       <Link to='/containerlogs'>Link to Logs</Link>
       <h3>Content in the container view {currentContainer}</h3>
+
+      <h3>{stats[currentContainer]?.cpu}</h3>
+      <Typography>MEM %: {stats[currentContainer]?.memory}</Typography>
+
       <div
         style={{
           position: 'relative',
@@ -124,6 +136,11 @@ const ContainerView = () => {
       <div style={{ position: 'relative', height: '40vw', width: '80vh' }}>
         <Doughnut data={doughData} />
       </div>
+
+
+      {/* <Typography>Image: {container.Image}</Typography> */}
+      <Typography>Typography Goes Here</Typography>
+
     </>
   );
 };
