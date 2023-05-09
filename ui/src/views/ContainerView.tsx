@@ -32,11 +32,13 @@ ChartJS.register(
 );
 
 const ContainerView = () => {
+
   const {
     currentContainer,
     containers,
     stats,
   } = useAppContext();
+
 
   // ## Chart Demo Data ##
   const barOptions = {
@@ -120,7 +122,7 @@ const ContainerView = () => {
       <Link to='/containerlogs'>Link to Logs</Link>
       <h3>Content in the container view {currentContainer}</h3>
 
-      <h3>{stats[currentContainer]?.cpu}</h3>
+      <h3>cpu: {stats[currentContainer]?.cpu}</h3>
       <Typography>MEM %: {stats[currentContainer]?.memory}</Typography>
 
       <div

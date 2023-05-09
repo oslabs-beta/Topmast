@@ -29,7 +29,7 @@ const DashboardView = () => {
       getContainers();
       getLogs(containers);
       getStats(containers);
-    }, 31000);
+    }, 1000);
     return () => clearInterval(interval);
   }, []);
 
