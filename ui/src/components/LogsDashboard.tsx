@@ -58,24 +58,67 @@ const LogsDashboard = () => {
       output = output || [];
       errors = errors || [];
 
+      // // For each container, create outputRows from output logs
+      // const outputRows = output.map(({ timestamp, content }, index) => {
+      //   return {
+      //     id: `${containerId}-o${index}`,
+      //     containerId,
+      //     type: 'Output',
+      //     timestamp,
+      //     content,
+      //   };
+      // });
+
+      // // For each container, create errorRows from error logs
+      // const errorRows = errors.map(({ timestamp, content }, index) => {
+      //   return {
+      //     id: `${containerId}-e${index}`,
+      //     containerId,
+      //     type: 'Error',
+      //     timestamp,
+      //     content,
+      //   };
+      // });
       // For each container, create outputRows from output logs
       const outputRows = output.map(({ timestamp, content }, index) => {
+        // parse timestamp into a Date object
+        const date = new Date(timestamp);
+        // format timestamp in the desired format
+        const formattedTimestamp =
+          `${date.getFullYear()}-` +
+          `${String(date.getMonth() + 1).padStart(2, '0')}-` +
+          `${String(date.getDate()).padStart(2, '0')} ` +
+          `${String(date.getHours() % 12 || 12).padStart(2, '0')}:` +
+          `${String(date.getMinutes()).padStart(2, '0')}:` +
+          `${String(date.getSeconds()).padStart(2, '0')}` +
+          `${date.getHours() < 12 ? ' AM' : ' PM'}`;
         return {
           id: `${containerId}-o${index}`,
           containerId,
           type: 'Output',
-          timestamp,
+          timestamp: formattedTimestamp,
           content,
         };
       });
 
       // For each container, create errorRows from error logs
       const errorRows = errors.map(({ timestamp, content }, index) => {
+        // parse timestamp into a Date object
+        const date = new Date(timestamp);
+        // format timestamp in the desired format
+        const formattedTimestamp =
+          `${date.getFullYear()}-` +
+          `${String(date.getMonth() + 1).padStart(2, '0')}-` +
+          `${String(date.getDate()).padStart(2, '0')} ` +
+          `${String(date.getHours() % 12 || 12).padStart(2, '0')}:` +
+          `${String(date.getMinutes()).padStart(2, '0')}:` +
+          `${String(date.getSeconds()).padStart(2, '0')}` +
+          `${date.getHours() < 12 ? ' AM' : ' PM'}`;
         return {
           id: `${containerId}-e${index}`,
           containerId,
           type: 'Error',
-          timestamp,
+          timestamp: formattedTimestamp,
           content,
         };
       });
