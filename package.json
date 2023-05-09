@@ -1,0 +1,6 @@
+{
+  "scripts": {
+    "install-extension": "make build-extension && make install-extension",
+    "enable-frontend-dev": "cd ui && npm install && npm run dev"
+  }
+}
