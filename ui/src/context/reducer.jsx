@@ -24,13 +24,31 @@ const reducer = (state, action) => {
         output.split('\n').map((line) => {
           const timestamp = line.slice(0, 30).trim();
           const content = line.slice(30).trim();
-          return { timestamp, content };
+          const date = new Date(timestamp);
+          const formattedTimestamp =
+            `${date.getFullYear()}-` +
+            `${String(date.getMonth() + 1).padStart(2, '0')}-` +
+            `${String(date.getDate()).padStart(2, '0')} ` +
+            `${String(date.getHours() % 12 || 12).padStart(2, '0')}:` +
+            `${String(date.getMinutes()).padStart(2, '0')}:` +
+            `${String(date.getSeconds()).padStart(2, '0')}` +
+            `${date.getHours() < 12 ? ' AM' : ' PM'}`;
+          return { timestamp: formattedTimestamp, content };
         }) || [];
       newLogs[containerId].errors =
         errors.split('\n').map((line) => {
           const timestamp = line.slice(0, 30).trim();
           const content = line.slice(30).trim();
-          return { timestamp, content };
+          const date = new Date(timestamp);
+          const formattedTimestamp =
+            `${date.getFullYear()}-` +
+            `${String(date.getMonth() + 1).padStart(2, '0')}-` +
+            `${String(date.getDate()).padStart(2, '0')} ` +
+            `${String(date.getHours() % 12 || 12).padStart(2, '0')}:` +
+            `${String(date.getMinutes()).padStart(2, '0')}:` +
+            `${String(date.getSeconds()).padStart(2, '0')}` +
+            `${date.getHours() < 12 ? ' AM' : ' PM'}`;
+          return { timestamp: formattedTimestamp, content };
         }) || [];
       const newState = { ...state, logs: newLogs };
       saveState(newState);

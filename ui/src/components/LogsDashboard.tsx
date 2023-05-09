@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useAppContext } from '../context/AppContext';
 import { Box, Typography, Checkbox, FormControlLabel } from '@mui/material';
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import { DataGrid, GridColDef, GridRowModel } from '@mui/x-data-grid';
 import { Link } from 'react-router-dom';
 
 const LogsDashboard = () => {
   // Get logs and containers from AppContext
-  const { logs, containers } = useAppContext();
+  const { logs, containers, getLogs } = useAppContext();
   // Initialize selectedContainers state as an empty set
   const [selectedContainers, setSelectedContainers] = useState<Set<string>>(
     () => {
@@ -20,6 +20,30 @@ const LogsDashboard = () => {
         : new Set();
     }
   );
+
+  // Initialize the logsRows state
+  const [logsRows, setLogsRows] = useState<GridRowModel[]>([]);
+  const logsRef = useRef(logs);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      if (containers && containers.length > 0) {
+        // get logs for all containers
+        getLogs(containers);
+      }
+    }, 5000); // fetch logs every 5 seconds
+
+    return () => clearInterval(intervalId);
+  }, [containers]);
+
+  useEffect(() => {
+    logsRef.current = logs;
+
+    // Call the combinedRows function
+    const newLogsRows = combinedRows(logsRef.current);
+    // Update the logsRows state with the new rows
+    setLogsRows(newLogsRows);
+  }, [logs]); // Recalculate logsRows whenever logs change
 
   // Save selectedContainers to localStorage whenever it changes
   useEffect(() => {
@@ -42,90 +66,63 @@ const LogsDashboard = () => {
     setSelectedContainers(newSelectedContainers);
   };
 
-  // Define combinedRows, which will contain the logs to display in the DataGrid
-  // - Use Object.entries() to transform logs object into an array of [containerId, logs] pairs
-  // - Filter this array to only include logs whose containerId is in selectedContainers,
-  //   or include all logs if selectedContainers is empty
-  // - Use flatMap() to create a new array of log rows, with each row including the containerId,
-  //   log type (Output/Error), and log content
-  const combinedRows = Object.entries(logs)
-    .filter(
-      ([containerId]) =>
-        selectedContainers.size === 0 || selectedContainers.has(containerId)
-    )
-    .flatMap(([containerId, { output, errors }]: any[]) => {
-      // Check if output and errors are defined, if not, set them to empty arrays
-      output = output || [];
-      errors = errors || [];
+  // Define combinedRows function, which will create the logs to display in the DataGrid
+  const combinedRows = (logs) => {
+    // Use Object.entries() to transform logs object into an array of [containerId, logs] pairs
+    // Filter this array to only include logs whose containerId is in selectedContainers,
+    // or include all logs if selectedContainers is empty
+    // Use flatMap() to create a new array of log rows, with each row including the containerId,
+    // log type (Output/Error), and log content
+    return Object.entries(logs)
+      .filter(
+        ([containerId]) =>
+          selectedContainers.size === 0 || selectedContainers.has(containerId)
+      )
+      .flatMap(([containerId, { output, errors }]: any[]) => {
+        // Check if output and errors are defined, if not, set them to empty arrays
+        output = output || [];
+        errors = errors || [];
 
-      // // For each container, create outputRows from output logs
-      // const outputRows = output.map(({ timestamp, content }, index) => {
-      //   return {
-      //     id: `${containerId}-o${index}`,
-      //     containerId,
-      //     type: 'Output',
-      //     timestamp,
-      //     content,
-      //   };
-      // });
+        // For each container, create outputRows from output logs
+        const outputRows = output
+          .map(({ timestamp, content }, index) => {
+            const date = new Date(timestamp);
+            if (isNaN(date.getTime())) {
+              console.warn(`Invalid timestamp: ${timestamp}`);
+              return;
+            }
+            return {
+              id: `${containerId}-o${index}`,
+              containerId,
+              type: 'Output',
+              timestamp: date.toString(),
+              content,
+            };
+          })
+          .filter(Boolean); // filter out undefined rows
 
-      // // For each container, create errorRows from error logs
-      // const errorRows = errors.map(({ timestamp, content }, index) => {
-      //   return {
-      //     id: `${containerId}-e${index}`,
-      //     containerId,
-      //     type: 'Error',
-      //     timestamp,
-      //     content,
-      //   };
-      // });
-      // For each container, create outputRows from output logs
-      const outputRows = output.map(({ timestamp, content }, index) => {
-        // parse timestamp into a Date object
-        const date = new Date(timestamp);
-        // format timestamp in the desired format
-        const formattedTimestamp =
-          `${date.getFullYear()}-` +
-          `${String(date.getMonth() + 1).padStart(2, '0')}-` +
-          `${String(date.getDate()).padStart(2, '0')} ` +
-          `${String(date.getHours() % 12 || 12).padStart(2, '0')}:` +
-          `${String(date.getMinutes()).padStart(2, '0')}:` +
-          `${String(date.getSeconds()).padStart(2, '0')}` +
-          `${date.getHours() < 12 ? ' AM' : ' PM'}`;
-        return {
-          id: `${containerId}-o${index}`,
-          containerId,
-          type: 'Output',
-          timestamp: formattedTimestamp,
-          content,
-        };
+        // For each container, create errorRows from error logs
+        const errorRows = errors
+          .map(({ timestamp, content }, index) => {
+            const date = new Date(timestamp);
+            if (isNaN(date.getTime())) {
+              console.warn(`Invalid timestamp: ${timestamp}`);
+              return; // skip invalid timestamps
+            }
+            return {
+              id: `${containerId}-e${index}`,
+              containerId,
+              type: 'Error',
+              timestamp,
+              content,
+            };
+          })
+          .filter(Boolean); // filter out undefined rows
+
+        // Combine outputRows and errorRows into a single array
+        return [...outputRows, ...errorRows];
       });
-
-      // For each container, create errorRows from error logs
-      const errorRows = errors.map(({ timestamp, content }, index) => {
-        // parse timestamp into a Date object
-        const date = new Date(timestamp);
-        // format timestamp in the desired format
-        const formattedTimestamp =
-          `${date.getFullYear()}-` +
-          `${String(date.getMonth() + 1).padStart(2, '0')}-` +
-          `${String(date.getDate()).padStart(2, '0')} ` +
-          `${String(date.getHours() % 12 || 12).padStart(2, '0')}:` +
-          `${String(date.getMinutes()).padStart(2, '0')}:` +
-          `${String(date.getSeconds()).padStart(2, '0')}` +
-          `${date.getHours() < 12 ? ' AM' : ' PM'}`;
-        return {
-          id: `${containerId}-e${index}`,
-          containerId,
-          type: 'Error',
-          timestamp: formattedTimestamp,
-          content,
-        };
-      });
-
-      // Combine outputRows and errorRows into a single array
-      return [...outputRows, ...errorRows];
-    });
+  };
 
   const columns: GridColDef[] = [
     { field: 'timestamp', headerName: 'Timestamp', width: 200 },
@@ -176,7 +173,7 @@ const LogsDashboard = () => {
       </Box>
       {/* Render the DataGrid with the combinedRows and columns */}
       <Box style={{ height: '90vh', width: '100%' }}>
-        <DataGrid rows={combinedRows} columns={columns} />
+        <DataGrid rows={logsRows} columns={columns} />
       </Box>
     </div>
   );
