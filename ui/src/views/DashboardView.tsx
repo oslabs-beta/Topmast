@@ -1,6 +1,7 @@
 import { useAppContext } from '../context/AppContext';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
@@ -35,35 +36,60 @@ const DashboardView = () => {
 
   return (
     <div>
-      <Link to="/">Link to Root</Link> |&nbsp;
-      <Link to="/container">Link to generic container</Link> |&nbsp;
-      <Link to="/containerlogs">Link to Logs</Link>
+      {/* <Link to="/">Link to Root</Link> |&nbsp; */}
+      {/* <Link to="/container">Link to generic container</Link> |&nbsp; */}
+      <Typography sx={{
+        fontWeight: 'bold',
+        my: 2,
+      }}> Dashboard |&nbsp;
+      <Link to="/containerlogs">Container Logs</Link>
+      </Typography>
+
       {containers.map((container) => {
         if (container.Image !== 'moby-metrics/topmast:latest') {
           return (
-            <Card key={container.ID}>
+            <Card key={container.ID}  sx={{my: 2,}}>
               {/* CardActionArea will be our link to detail view, passing in the containerID as a prop */}
               <CardActionArea>
                 <CardContent>
-                  <Typography variant="h3">{container.Names}</Typography>
 
-                  {/* use arrow function to set id during map */}
-                  <Link
-                    to="/container"
-                    onClick={() => setCurrentContainer(container.ID)}
+
+                  <Box
+                    m={1} //margin
+                    display="flex"
+                    justifyContent="flex-start"
+                    alignItems="center"
                   >
-                    Go to {container.ID}
-                  </Link>
+                    <CircleIcon
+                      sx={{
+                        mr: 1,
+                        color:
+                          container.State === 'running' ? green[500] : red[300],
+                      }}
+                    />
+                    {/* use arrow function to set id during map */}
+                    <Link 
+                      to="/container"
+                      onClick={() => setCurrentContainer(container.ID)}><Typography variant="h3" >{container.Names}</Typography>
+                    </Link>
+                  </Box>
 
-                  <Typography>ID: {container.ID}</Typography>
-                  <Typography>Image: {container.Image}</Typography>
                   {/* <Typography>Created: {container.Created}</Typography> */}
-                  <Typography>State</Typography>
-                  <Typography>Status: {container.Status}</Typography>
-                  <Typography sx={{ color: () => red[300] }}>
+                  {/* <Typography>State</Typography> */}
+
+                  <Typography>ID: {container.ID} &nbsp; | &nbsp; Image: {container.Image}</Typography>
+
+                  <Typography>
+                    Status: {container.Status} &nbsp; | &nbsp;
+                    CPU %: {stats[container.ID]?.cpu} &nbsp; | &nbsp;
+                    MEM %: {stats[container.ID]?.memory}
+                  </Typography>
+
+                  {/* <Typography sx={{ color: () => red[300] }}>
                     CPU %: {stats[container.ID]?.cpu}
                   </Typography>
-                  <Typography>MEM %: {stats[container.ID]?.memory}</Typography>
+                  <Typography>MEM %: {stats[container.ID]?.memory}</Typography> */}
+
                   {/* {Object.entries(stats[container.ID]).map((stat) => {
                       return (
                         <Typography>
@@ -71,12 +97,7 @@ const DashboardView = () => {
                         </Typography>
                         );
                       })} */}
-                  <CircleIcon
-                    sx={{
-                      color:
-                        container.State === 'running' ? green[500] : red[500],
-                    }}
-                  />
+
                 </CardContent>
               </CardActionArea>
               <CardActions>
