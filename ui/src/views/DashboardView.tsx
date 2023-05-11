@@ -14,6 +14,7 @@ const DashboardView = () => {
     logs,
     stats,
     getContainers,
+    setCurrentContainer,
     getLogs,
     getStats,
     ddClient,
@@ -34,10 +35,10 @@ const DashboardView = () => {
 
   return (
     <div>
-      <Link to="containerlogs">Link to Logs</Link>
-      {/* // DashboardView */}
+      <Link to="/">Link to Root</Link> |&nbsp;
+      <Link to="/container">Link to generic container</Link> |&nbsp;
+      <Link to="/containerlogs">Link to Logs</Link>
       {containers.map((container) => {
-        // console.log(container);
         if (container.Image !== 'moby-metrics/topmast:latest') {
           return (
             <Card key={container.ID}>
@@ -45,6 +46,15 @@ const DashboardView = () => {
               <CardActionArea>
                 <CardContent>
                   <Typography variant="h3">{container.Names}</Typography>
+
+                  {/* use arrow function to set id during map */}
+                  <Link
+                    to="/container"
+                    onClick={() => setCurrentContainer(container.ID)}
+                  >
+                    Go to {container.ID}
+                  </Link>
+
                   <Typography>ID: {container.ID}</Typography>
                   <Typography>Image: {container.Image}</Typography>
                   {/* <Typography>Created: {container.Created}</Typography> */}
@@ -92,7 +102,7 @@ const DashboardView = () => {
                     superKillContainer(container.ID);
                   }}
                 >
-                  SUPERKILL
+                  FORCE REMOVE
                 </Button>
               </CardActions>
             </Card>
