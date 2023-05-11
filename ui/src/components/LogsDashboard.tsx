@@ -1,6 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useAppContext } from '../context/AppContext';
-import { Box, Typography, Checkbox, FormControlLabel } from '@mui/material';
+import {
+  Box,
+  Typography,
+  Checkbox,
+  FormControlLabel,
+  Button,
+  Toolbar,
+  Paper,
+} from '@mui/material';
 import { DataGrid, GridColDef, GridRowModel } from '@mui/x-data-grid';
 import { Link } from 'react-router-dom';
 
@@ -147,30 +155,43 @@ const LogsDashboard = () => {
     },
   ];
 
+  const clearLogs = () => {
+    console.log('Clearing logs');
+  };
+
   // Render LogsDashboard component
   return (
     <div style={{ height: '100vh', width: '100%' }}>
-      <Link to="/">Link to Dashboard (/)</Link>
-
-      {/* Display a title for the container selection section */}
-      <Typography variant="h6">Select containers:</Typography>
-      {/* Render container checkboxes */}
-      <Box display="flex" flexWrap="wrap">
-        {containers.map((container: any) => (
-          <FormControlLabel
-            key={container.ID}
-            control={
-              <Checkbox
-                checked={selectedContainers.has(container.ID)}
-                onChange={(event) =>
-                  handleCheckboxChange(container.ID, event.target.checked)
-                }
-              />
-            }
-            label={container.ID}
-          />
-        ))}
-      </Box>
+      <Toolbar>
+        <Button component={Link} to="/">
+          Dashboard
+        </Button>{' '}
+        <Box sx={{ flexGrow: 1 }} /> {/* This pushes the button to the right */}
+        <Button variant="contained" color="secondary" onClick={clearLogs}>
+          Clear Logs
+        </Button>
+      </Toolbar>
+      <Paper elevation={3} style={{ margin: '20px', padding: '20px' }}>
+        <Typography variant="h6" gutterBottom>
+          Select Containers:
+        </Typography>
+        <Box display="flex" flexWrap="wrap">
+          {containers.map((container: any) => (
+            <FormControlLabel
+              key={container.ID}
+              control={
+                <Checkbox
+                  checked={selectedContainers.has(container.ID)}
+                  onChange={(event) =>
+                    handleCheckboxChange(container.ID, event.target.checked)
+                  }
+                />
+              }
+              label={container.Names}
+            />
+          ))}
+        </Box>
+      </Paper>
       {/* Render the DataGrid with the combinedRows and columns */}
       <Box style={{ height: '90vh', width: '100%' }}>
         <DataGrid rows={logsRows} columns={columns} />
