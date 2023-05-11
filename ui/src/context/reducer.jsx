@@ -60,6 +60,10 @@ const reducer = (state, action) => {
       saveState(newState);
       return newState;
     }
+
+    default: {
+      return state;
+    }
   }
 };
 

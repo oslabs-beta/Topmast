@@ -8,6 +8,7 @@ import {
   Button,
   Toolbar,
   Paper,
+  Menu,
 } from '@mui/material';
 import { DataGrid, GridColDef, GridRowModel } from '@mui/x-data-grid';
 import { Link } from 'react-router-dom';
@@ -33,13 +34,17 @@ const LogsDashboard = () => {
   const [logsRows, setLogsRows] = useState<GridRowModel[]>([]);
   const logsRef = useRef(logs);
 
+  // Add state for the dropdown
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [dropdownContent, setDropdownContent] = useState('');
+
   useEffect(() => {
     const intervalId = setInterval(() => {
       if (containers && containers.length > 0) {
         // get logs for all containers
         getLogs(containers);
       }
-    }, 5000); // fetch logs every 5 seconds
+    }, 1000); // fetch logs every 1 seconds
 
     return () => clearInterval(intervalId);
   }, [containers]);
@@ -103,7 +108,7 @@ const LogsDashboard = () => {
               id: `${containerId}-o${index}`,
               containerId,
               type: 'Output',
-              timestamp: date.toString(),
+              timestamp: date, // Keep as a Date
               content,
             };
           })
@@ -121,7 +126,7 @@ const LogsDashboard = () => {
               id: `${containerId}-e${index}`,
               containerId,
               type: 'Error',
-              timestamp,
+              timestamp: date, // Keep as a Date
               content,
             };
           })
@@ -133,7 +138,19 @@ const LogsDashboard = () => {
   };
 
   const columns: GridColDef[] = [
-    { field: 'timestamp', headerName: 'Timestamp', width: 200 },
+    {
+      field: 'timestamp',
+      headerName: 'Timestamp',
+      width: 200,
+      // Add a custom render function
+      renderCell: (params) => {
+        const date = new Date(params.value);
+        return date.toLocaleString();
+      },
+      // Add a custom sort comparator
+      sortComparator: (v1, v2, param1, param2) =>
+        new Date(param1.value).getTime() - new Date(param2.value).getTime(),
+    },
     { field: 'containerId', headerName: 'Container ID', width: 150 },
     { field: 'type', headerName: 'Type', width: 100 },
     {
@@ -141,14 +158,9 @@ const LogsDashboard = () => {
       headerName: 'Content',
       flex: 1,
       renderCell: (params) => {
-        // Split log content into separate lines
-        const lines = params.value.split('\n');
-        // Render each line of log content as a Typography component
         return (
           <div>
-            {lines.map((line, index) => (
-              <Typography key={index}>{line}</Typography>
-            ))}
+            <Typography>{params.value}</Typography>
           </div>
         );
       },
@@ -157,6 +169,15 @@ const LogsDashboard = () => {
 
   const clearLogs = () => {
     console.log('Clearing logs');
+  };
+
+  const handleOpen = (event: React.MouseEvent<HTMLElement>, param) => {
+    setDropdownContent(param.row.content);
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
   };
 
   // Render LogsDashboard component
@@ -194,8 +215,27 @@ const LogsDashboard = () => {
       </Paper>
       {/* Render the DataGrid with the combinedRows and columns */}
       <Box style={{ height: '90vh', width: '100%' }}>
-        <DataGrid rows={logsRows} columns={columns} />
+        <DataGrid
+          rows={logsRows}
+          columns={columns}
+          onRowClick={(param, event) => handleOpen(event, param)}
+        />
       </Box>
+      <Menu
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+        PaperProps={{
+          style: {
+            maxHeight: '80vh',
+            width: 'auto',
+            overflow: 'auto', // add scroll if the content exceeds the maxHeight
+          },
+        }}
+      >
+        <Typography style={{ padding: '10px' }}>{dropdownContent}</Typography>{' '}
+        {/* padding for better aesthetics */}
+      </Menu>
     </div>
   );
 };
