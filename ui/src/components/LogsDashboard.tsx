@@ -108,8 +108,7 @@ const LogsDashboard = () => {
   // Render LogsDashboard component
   return (
     <div style={{ height: '100vh', width: '100%' }}>
-      <Link to='/'>Link to Dashboard (/)</Link>
-
+      <Typography><Link to='/'>Dashboard</Link> |&nbsp;Container Logs</Typography>
       {/* Display a title for the container selection section */}
       <Typography variant='h6'>Select containers:</Typography>
       {/* Render container checkboxes */}
