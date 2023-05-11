@@ -6,7 +6,6 @@ import LogsDashboard from './components/LogsDashboard';
 export function App() {
   return (
     <>
-    <img src="../../topmast_cruise.png" />
     <h2>TopMast</h2>
 
       <Routes>
@@ -14,6 +13,7 @@ export function App() {
         <Route path="/container" element={<ContainerView />} />
         <Route path="/containerlogs" element={<LogsDashboard />} />
       </Routes>
+      
     </>
   );
 }
