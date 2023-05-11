@@ -7,7 +7,7 @@ export function App() {
   return (
     <>
 
-    <h2>TopMast Cross-View Branding</h2>
+    <h2>TopMast Cross-View Branding (see app)</h2>
 
       <Routes>
         <Route path="/" element={<DashboardView />} />

@@ -6,7 +6,7 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import CircleIcon from '@mui/icons-material/Circle';
-import { red, green } from '@mui/material/colors';
+import { red, green, grey, blue } from '@mui/material/colors';
 import { CardActionArea, CardActions, Typography } from '@mui/material';
 
 const DashboardView = () => {
@@ -41,18 +41,22 @@ const DashboardView = () => {
       <Typography sx={{
         fontWeight: 'bold',
         my: 2,
+        fontSize: 12,
+        textTransform: 'uppercase',
       }}> Dashboard |&nbsp;
-      <Link to="/containerlogs">Container Logs</Link>
+        <Link to="/containerlogs"color="blue[600]" >Container Logs</Link>
       </Typography>
+
+      <Box component="span" sx={{ color: grey[500], fontSize: 10, textTransform: 'uppercase', mt: 1 }}></Box>
 
       {containers.map((container) => {
         if (container.Image !== 'moby-metrics/topmast:latest') {
           return (
             <Card key={container.ID}  sx={{my: 2,}}>
               {/* CardActionArea will be our link to detail view, passing in the containerID as a prop */}
-              <CardActionArea>
-                <CardContent>
+              {/* <CardActionArea> */}
 
+                <CardContent>
 
                   <Box
                     m={1} //margin
@@ -62,70 +66,95 @@ const DashboardView = () => {
                   >
                     <CircleIcon
                       sx={{
+                        fontSize: 16,
                         mr: 1,
+                        ml:-1,
+                        mt: 1,
                         color:
-                          container.State === 'running' ? green[500] : red[300],
+                          container.State === 'running' ? green[600] : red[300],
                       }}
                     />
-                    {/* use arrow function to set id during map */}
-                    <Link 
-                      to="/container"
-                      onClick={() => setCurrentContainer(container.ID)}><Typography variant="h3" >{container.Names}</Typography>
+
+                    <Link
+                      to="/container" style={{ textDecoration:'none' }}
+                      onClick={() => setCurrentContainer(container.ID)}
+                    >
+                      <Typography
+                        variant="h3" sx={{ color: blue[600],}}
+                      >{container.Names}</Typography>
                     </Link>
+
                   </Box>
 
-                  {/* <Typography>Created: {container.Created}</Typography> */}
-                  {/* <Typography>State</Typography> */}
 
-                  <Typography>ID: {container.ID} &nbsp; | &nbsp; Image: {container.Image}</Typography>
+                  <Typography sx={{ ml:3 }}>
 
-                  <Typography>
-                    Status: {container.Status} &nbsp; | &nbsp;
-                    CPU %: {stats[container.ID]?.cpu} &nbsp; | &nbsp;
-                    MEM %: {stats[container.ID]?.memory}
+                    <Box component="span" sx={{ color: grey[500], fontSize: 10, textTransform: 'uppercase', mt: 1 }}>Container ID:</Box>  {container.ID} &nbsp; &nbsp;
+
+                    <Box component="span" sx={{ color: grey[500], fontSize: 10, textTransform: 'uppercase', mt: 1 }}>Image:</Box>  {container.Image}
+
                   </Typography>
 
-                  {/* <Typography sx={{ color: () => red[300] }}>
-                    CPU %: {stats[container.ID]?.cpu}
+                  <Typography sx={{ ml:3 }}>
+
+                    <Box component="span" sx={{ color: grey[500], fontSize: 10, textTransform: 'uppercase', mt: 1}}>Status:</Box> {container.Status} &nbsp; &nbsp;
+
+                    <Box component="span" sx={{ color: grey[500], fontSize: 10, textTransform: 'uppercase', mt: 1 }}>CPU%:</Box>  {stats[container.ID]?.cpu} &nbsp; &nbsp;
+
+                    <Box component="span" sx={{ color: grey[500], fontSize: 10, textTransform: 'uppercase', mt: 1 }}>MEM%:</Box>  {stats[container.ID]?.memory}
+
                   </Typography>
-                  <Typography>MEM %: {stats[container.ID]?.memory}</Typography> */}
 
-                  {/* {Object.entries(stats[container.ID]).map((stat) => {
-                      return (
-                        <Typography>
-                        {stat[0]} : {stat[1]}
-                        </Typography>
-                        );
-                      })} */}
 
-                </CardContent>
-              </CardActionArea>
-              <CardActions>
-                <Button
-                  variant="outlined"
-                  onClick={() => {
-                    startContainer(container.ID);
-                  }}
+                <Box
+                    m={1} //margin
+                    display="flex"
+                    justifyContent="flex-end"
+                    alignItems="center"
                 >
-                  START
-                </Button>
-                <Button
-                  variant="outlined"
-                  onClick={() => {
-                    killContainer(container.ID);
-                  }}
-                >
-                  KILL
-                </Button>
-                <Button
-                  variant="contained"
-                  onClick={() => {
-                    superKillContainer(container.ID);
-                  }}
-                >
-                  FORCE REMOVE
-                </Button>
-              </CardActions>
+                  <Button
+                    variant="outlined" size="small"
+                    sx={{
+                      mt:1,
+                      mr:1,
+                      color:
+                        container.State === 'running' ? grey[600] : green[600],
+                    }}
+                    onClick={() => {
+                      startContainer(container.ID);
+                    }}
+                  >START</Button>
+
+                  <Button
+                    variant="outlined" size="small"
+                    sx={{
+                      mt:1,
+                      mr:1,
+                      color:
+                        container.State === 'running' ? red[300] : grey[600],
+                    }}
+                    onClick={() => {
+                      killContainer(container.ID);
+                    }}
+                  >KILL</Button>
+
+                  <Button
+                    variant="text" size="small"
+                    sx={{
+                      mt:1,
+                      color: red[300]
+                    }}
+                    onClick={() => {
+                      superKillContainer(container.ID);
+                    }}
+                  >FORCE REMOVE</Button>
+
+                </Box>
+
+              </CardContent>
+
+              {/* </CardActionArea> */}
+
             </Card>
           );
         }
