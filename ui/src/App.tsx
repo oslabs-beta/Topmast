@@ -6,8 +6,8 @@ import LogsDashboard from './components/LogsDashboard';
 export function App() {
   return (
     <>
-
-    <h2>TopMast Cross-View Branding (see app)</h2>
+    <img src="../../topmast_cruise.png" />
+    <h2>TopMast</h2>
 
       <Routes>
         <Route path="/" element={<DashboardView />} />

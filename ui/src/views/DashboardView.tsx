@@ -1,13 +1,22 @@
 import { useAppContext } from '../context/AppContext';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import Button from '@mui/material/Button';
+
+// import Box from '@mui/material/Box';
+// import Card from '@mui/material/Card';
+// import CardContent from '@mui/material/CardContent';
+// import Button from '@mui/material/Button';
+
 import CircleIcon from '@mui/icons-material/Circle';
 import { red, green, grey, blue } from '@mui/material/colors';
-import { CardActionArea, CardActions, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  ButtonGroup,
+  Card,
+  CardContent,
+  CardActionArea,
+  Typography, } from '@mui/material';
 
 const DashboardView = () => {
   const {
@@ -36,23 +45,27 @@ const DashboardView = () => {
 
   return (
     <div>
-      {/* <Link to="/">Link to Root</Link> |&nbsp; */}
-      {/* <Link to="/container">Link to generic container</Link> |&nbsp; */}
-      <Typography sx={{
+
+      <ButtonGroup sx={{mb:2}} size="small" variant="contained" aria-label="main navigation">
+        <Button component={Link} to="/">Dashboard</Button>
+        <Button component={Link} to="/containerlogs">Logs</Button>
+      </ButtonGroup>
+
+      {/* <Typography sx={{
         fontWeight: 'bold',
         my: 2,
         fontSize: 12,
         textTransform: 'uppercase',
       }}> Dashboard |&nbsp;
         <Link to="/containerlogs"color="blue[600]" >Container Logs</Link>
-      </Typography>
+      </Typography> */}
 
       <Box component="span" sx={{ color: grey[500], fontSize: 10, textTransform: 'uppercase', mt: 1 }}></Box>
 
       {containers.map((container) => {
         if (container.Image !== 'moby-metrics/topmast:latest') {
           return (
-            <Card key={container.ID}>
+            <Card key={container.ID} sx={{mb:1}} >
               {/* CardActionArea will be our link to detail view, passing in the containerID as a prop */}
               {/* <CardActionArea> */}
 
