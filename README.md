@@ -28,23 +28,16 @@ Topmast utilizes the following technologies:
 
 ## Setup
 
-To install Topmast locally , run:
+To install and run Topmast locally:
 
 ```bash
 npm run install-extension
-```
-
-To verify that Topmast has installed correctly, open Docker Dashboard once the installation is complete. The left-hand menu will display an extension with the Topmast logo. You can also use `docker extension ls` to see that the extension has been installed successfully.
-
-### Enabling Hot Module Reloading
-
-To enable hot module reloading during development, use:
-
-```bash
 npm run enable-frontend-dev
 ```
 
-This script will start a development server listening at `localhost:3000` and tells Docker Desktop to use it as the frontend source
+The first command will build and install the Topmast container. In the current build, this is insufficient to run Topmast. We also have to enable frontend development mode with the second command. This mode also enables hot module reloading, so you do not have to build and install a new container to test every change.
+
+To verify that Topmast has installed correctly, open Docker Desktop once the installation is complete. The left-hand menu will display an extension with the Topmast logo. You can also use `docker extension ls` to see that the extension has been installed successfully.
 
 ### Chrome DevTools
 
