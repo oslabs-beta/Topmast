@@ -27,21 +27,12 @@ const ContainerView = () => {
         <Button component={Link} to="/containerlogs">Logs</Button>
       </ButtonGroup>
 
-      {/* <Link to='/'>Link to Root</Link> |&nbsp;
-      <Link to='/container'>Link to generic container</Link> |&nbsp;
-      <Link to='/containerlogs'>Link to Logs</Link> */}
-      <h3>Container Details: {currentContainer}</h3>
+      <h2>Container Details: {currentContainer}</h2>
 
-      <h3>cpu: {stats[currentContainer]?.cpu}</h3>
-      <Typography>MEM %: {stats[currentContainer]?.memory}</Typography>
+      <h4>CPU% {stats[currentContainer]?.cpu} &nbsp; MEM %: {stats[currentContainer]?.memory}</h4>
 
 
-<hr />
-
-    <h3>imported charts:</h3>
     <ContainerChart />
-
-
 
     </>
   );
