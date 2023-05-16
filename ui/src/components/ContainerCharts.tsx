@@ -44,67 +44,7 @@ ChartJS.register(
 const ContainerCharts = () => {
   const { currentContainer, containers, stats } = useAppContext();
 
-
-  const lineOptions = {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      legend: {
-          display: false
-        },
-      title: {
-        display: false,
-      },
-    },
-    scales: {
-      x: {
-        title: {
-        },
-      },
-      y: {
-        title: {
-          display: true,
-          text: 'Percentage',
-        },
-        min: '0',
-        ticks: {
-          callback: function(value, index, ticks) {
-              return value + '%';
-          },
-        }
-      }
-    },
-
-  };
-
-    // line chart data
-    const lineData = {
-      labels: [null],
-      datasets: [
-        {
-          label: 'percentage used',
-          data: [1],
-          backgroundColor: 'rgba(255, 99, 132, 0.9)',
-          borderColor: 'rgba(53, 162, 235, 0.3)',
-        },
-      ],
-    };
-
-
-
   // MEM CHART OPTIONS & DATA
-  const memData = {
-    labels: [null],
-    datasets: [
-      {
-        label: 'percentage used',
-        data: [1],
-        backgroundColor: 'rgba(255, 99, 132, 0.9)',
-        borderColor: 'rgba(53, 162, 235, 0.3)',
-      },
-    ],
-  };
-
   const memOptions = {
     responsive: true,
     maintainAspectRatio: false,
@@ -135,6 +75,18 @@ const ContainerCharts = () => {
       }
     },
 
+  };
+  // mem chart data
+  const memData = {
+    labels: [null],
+    datasets: [
+      {
+        label: 'percentage used',
+        data: [1],
+        backgroundColor: 'rgba(255, 99, 132, 0.9)',
+        borderColor: 'rgba(53, 162, 235, 0.3)',
+      },
+    ],
   };
 
 // CPU CHART OPTIONS & DATA
@@ -182,12 +134,8 @@ const ContainerCharts = () => {
     ],
   };
 
-
-
   // create a ref to the chart.js instance
   // works without types, but these have been suggested:
-  const lineChartRef = useRef<ChartJS<'line', number[], string>>(null);
-
   const cpuChartRef = useRef<ChartJS<'line', number[], string>>(null);
   const memChartRef = useRef<ChartJS<'line', number[], string>>(null);
 
@@ -217,21 +165,17 @@ const ContainerCharts = () => {
       cpuChart.data.labels.push(newTimestampLabel);
       cpuChart.data.datasets[0].data.push(newCpuData);
 
-
-      // update rendered chart
-
+      // update rendered charts
       memChart.update();
       cpuChart.update();
-    }, 2000); //
 
+    }, 2000); //
 
     // Cleanup interval on component unmount
     return () => clearInterval(interval);
 
   // end useEffect
   }, []);
-
-
 
 
   return (
