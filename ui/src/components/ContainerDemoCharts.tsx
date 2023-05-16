@@ -76,7 +76,7 @@ ChartJS.register(
   Legend
 );
 
-const ContainerChart = () => {
+const ContainerDemoCharts = () => {
   const { currentContainer, containers, stats } = useAppContext();
 
   // ## Chart Demo Data ##
@@ -225,6 +225,7 @@ const ContainerChart = () => {
 
   return (
     <>
+    <h2>Demo Charts</h2>
 
       <div
         style={{
@@ -265,4 +266,4 @@ const ContainerChart = () => {
   );
 };
 
-export default ContainerChart;
+export default ContainerDemoCharts;

@@ -8,8 +8,8 @@ import {
   ButtonGroup,
   Box
 } from '@mui/material';
-import ContainerChart from '../components/ContainerChart';
-
+import ContainerCharts from '../components/ContainerCharts';
+import ContainerDemoCharts from '../components/ContainerDemoCharts';
 
 const ContainerView = () => {
 
@@ -29,10 +29,10 @@ const ContainerView = () => {
 
       <h2>Container Details: {currentContainer}</h2>
 
-      <h4>CPU% {stats[currentContainer]?.cpu} &nbsp; MEM %: {stats[currentContainer]?.memory}</h4>
+      <h4>stuff about the container</h4>
 
 
-    <ContainerChart />
+    <ContainerCharts />
 
     </>
   );
