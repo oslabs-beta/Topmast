@@ -6,14 +6,14 @@ import LogsDashboard from './components/LogsDashboard';
 export function App() {
   return (
     <>
-
-    <h2>TopMast Cross-View Branding (see app)</h2>
+    <h2>TopMast</h2>
 
       <Routes>
         <Route path="/" element={<DashboardView />} />
         <Route path="/container" element={<ContainerView />} />
         <Route path="/containerlogs" element={<LogsDashboard />} />
       </Routes>
+      
     </>
   );
 }

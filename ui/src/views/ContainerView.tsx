@@ -1,9 +1,15 @@
 import { Link } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
 
-import { Typography } from '@mui/material';
-import ContainerChart from '../components/ContainerChart';
-
+import {
+  Typography,
+  Toolbar,
+  Button,
+  ButtonGroup,
+  Box
+} from '@mui/material';
+import ContainerCharts from '../components/ContainerCharts';
+import ContainerDemoCharts from '../components/ContainerDemoCharts';
 
 const ContainerView = () => {
 
@@ -16,21 +22,17 @@ const ContainerView = () => {
 
   return (
     <>
-      <Link to='/'>Link to Root</Link> |&nbsp;
-      <Link to='/container'>Link to generic container</Link> |&nbsp;
-      <Link to='/containerlogs'>Link to Logs</Link>
-      <h3>Content in the container view {currentContainer}</h3>
+      <ButtonGroup sx={{mb:2}} size="small" variant="contained" aria-label="main navigation">
+        <Button component={Link} to="/">Dashboard</Button>
+        <Button component={Link} to="/containerlogs">Logs</Button>
+      </ButtonGroup>
 
-      <h3>cpu: {stats[currentContainer]?.cpu}</h3>
-      <Typography>MEM %: {stats[currentContainer]?.memory}</Typography>
+      <h2>Container Details: {currentContainer}</h2>
 
-
-<hr />
-
-    <h3>imported charts:</h3>
-    <ContainerChart />
+      <h4>stuff about the container</h4>
 
 
+    <ContainerCharts />
 
     </>
   );

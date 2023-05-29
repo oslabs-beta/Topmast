@@ -6,6 +6,7 @@ import {
   Checkbox,
   FormControlLabel,
   Button,
+  ButtonGroup,
   Toolbar,
   Paper,
   Menu,
@@ -183,15 +184,12 @@ const LogsDashboard = () => {
   // Render LogsDashboard component
   return (
     <div style={{ height: '100vh', width: '100%' }}>
-      <Toolbar>
-        <Button component={Link} to="/">
-          Dashboard
-        </Button>{' '}
-        <Box sx={{ flexGrow: 1 }} /> {/* This pushes the button to the right */}
-        <Button variant="contained" color="secondary" onClick={clearLogs}>
-          Clear Logs
-        </Button>
-      </Toolbar>
+
+      <ButtonGroup sx={{mb:2}} size="small" variant="contained" aria-label="main navigation">
+        <Button component={Link} to="/">Dashboard</Button>
+        <Button component={Link} to="/containerlogs">Logs</Button>
+      </ButtonGroup>{' '}
+
       <Paper elevation={3} style={{ margin: '20px', padding: '20px' }}>
         <Typography variant="h6" gutterBottom>
           Select Containers:
@@ -213,6 +211,17 @@ const LogsDashboard = () => {
           ))}
         </Box>
       </Paper>
+
+      <Toolbar>
+        {/* <Button component={Link} to="/">
+          Dashboard
+        </Button>{' '} */}
+        <Box sx={{ flexGrow: 1 }} /> {/* This pushes the button to the right */}
+        <Button variant="contained" color="secondary" onClick={clearLogs}>
+          Clear Logs
+        </Button>
+      </Toolbar>
+
       {/* Render the DataGrid with the combinedRows and columns */}
       <Box style={{ height: '90vh', width: '100%' }}>
         <DataGrid
